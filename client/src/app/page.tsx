@@ -81,7 +81,7 @@ export default function LandingPage() {
                 </g>
               </svg>
               <Link href="/" className={scrolled ? 'text-gray-800' : 'text-white'}>
-                elkom Home.
+                Welkom Home.
               </Link>
             </motion.div>
             <div className="hidden md:flex items-center space-x-6">
@@ -328,20 +328,20 @@ export default function LandingPage() {
             transition={{ duration: 1, delay: 0.5 }}
           >
             <h1 className="text-5xl md:text-7xl mb-4 flex items-center justify-center gap-2">
-              <span className="font-thin">Welkom</span>
-              <span className="font-thin tracking-wide">HOME</span>
+              <span className="">Welkom</span>
+              <span className="font-thin">HOME</span>
             </h1>
             <p className="text-xl md:text-2xl font-light">
               Expérience de luxe dans le Golfe de Saint-Tropez
             </p>
             <motion.button
-              className="mx-auto mt-8 px-12 py-4 bg-transparent backdrop-blur-sm border border-white/30 hover:border-gold/50 text-white text-lg tracking-wide inline-flex items-center gap-3 rounded-lg transition-all duration-300"
+              className="mx-auto mt-8 px-6 sm:px-8 py-3 sm:py-4 bg-transparent backdrop-blur-sm border border-white/30 hover:border-gold/50 text-white text-sm sm:text-lg tracking-wide inline-flex items-center gap-2 sm:gap-3 rounded-lg transition-all duration-300"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <span className="font-light">Découvrir nos services</span>
+              <span className="font-light whitespace-nowrap">Découvrir nos services</span>
               <motion.span
-                className="text-xl"
+                className="text-lg sm:text-xl"
                 initial={{ x: 0 }}
                 whileHover={{ x: 5 }}
                 transition={{ duration: 0.3 }}

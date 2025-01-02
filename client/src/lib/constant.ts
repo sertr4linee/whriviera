@@ -79,15 +79,15 @@ export const bentoImages = [
   },
   {
     src: "https://static.wixstatic.com/media/39f71a_273bff506aa54b66927aaf17086d35fe~mv2.jpg/v1/fit/w_1564,h_1336,q_90/39f71a_273bff506aa54b66927aaf17086d35fe~mv2.webp",
-    text: '118',
+    text: '3',
   },
   {
     src: "https://static.wixstatic.com/media/39f71a_273bff506aa54b66927aaf17086d35fe~mv2.jpg/v1/fit/w_1564,h_1336,q_90/39f71a_273bff506aa54b66927aaf17086d35fe~mv2.webp",
-    text: '118',
+    text: '4',
   },
   {
     src: "https://static.wixstatic.com/media/39f71a_273bff506aa54b66927aaf17086d35fe~mv2.jpg/v1/fit/w_1564,h_1336,q_90/39f71a_273bff506aa54b66927aaf17086d35fe~mv2.webp",
-    text: '118',
+    text: 'dd',
   },
 ]
 

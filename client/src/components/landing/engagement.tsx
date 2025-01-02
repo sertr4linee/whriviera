@@ -92,7 +92,7 @@ const EngagementComp = () => {
                                 </motion.div>
                                 
                                 <h3 className="text-2xl font-semibold mb-3">{item.title}</h3>
-                                <p className="text-gray-600 mb-4">{item.description}</p>
+                                <p className="text-black mb-4">{item.description}</p>
                                 <p className="text-sm text-gold font-medium">{item.statsLabel}</p>
                             </motion.div>
                         )

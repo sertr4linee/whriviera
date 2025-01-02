@@ -18,7 +18,7 @@ const LifestyleComp = () => {
                 >
                     Lifestyle
                 </motion.h2>
-                <div className="h-screen py-20 w-full">
+                <div className="py-8 w-full">
                     <LayoutGrid cards={cards} />
                 </div>
             </div>
@@ -88,7 +88,7 @@ const cards = [
         content: <SkeletonOne />,
         className: "md:col-span-2",
         thumbnail: {
-            src: "/vue.jpg",
+            src: "/cayenne.jpg",
             width: 1645,
             height: 625,
             alt: "House in the woods"

@@ -27,7 +27,7 @@ const ServicesComp = () => {
     return (
         <section className="py-16 bg-white">
             <div className="container mx-auto px-6">
-                <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+                <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
                     {/* Contenu gauche */}
                     <div className="w-full lg:w-1/2 max-w-2xl mx-auto lg:mx-0">
                         <motion.div
@@ -106,7 +106,7 @@ const ServicesComp = () => {
                     </div>
 
                     {/* Image droite */}
-                    <div className="w-full lg:w-1/2">
+                    <div className="w-full lg:w-1/2 mb-8 lg:mb-0">
                         <motion.div
                             className="relative aspect-[4/3] md:aspect-[16/9] lg:aspect-auto lg:h-full"
                             initial={{ opacity: 0, x: 20 }}
