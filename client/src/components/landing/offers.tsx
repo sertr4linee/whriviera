@@ -5,8 +5,12 @@ import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState, useEffect } from 'react'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const OffersComp = () => {
+    const { language } = useLanguage()
+    const { t } = useTranslation(language)
     const [startIndex, setStartIndex] = useState(0)
     const [itemsToShow, setItemsToShow] = useState(4)
     const [maxIndex, setMaxIndex] = useState(bentoImages.length - itemsToShow)
@@ -52,7 +56,7 @@ const OffersComp = () => {
                     transition={{ duration: 0.5 }}
                     viewport={{ once: true }}
                 >
-                    Nos Offres Exclusives
+                    {t('components.offers.title')}
                 </motion.h2>
                 <div className="relative">
                     {/* Navigation buttons */}

@@ -5,8 +5,12 @@ import Image from 'next/image'
 import { Calendar, Users, Home, Star, ArrowRight, Lightbulb, Rocket, TrendingUp, Award } from 'lucide-react'
 import Navbar from '@/components/navbar'
 import { Timeline } from '@/components/timeline'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 export default function AboutPage() {
+  const { language } = useLanguage()
+  const { t } = useTranslation(language)
   const { scrollYProgress } = useScroll()
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.5])
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
@@ -161,9 +165,11 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-5xl md:text-7xl font-light mb-4">Notre Histoire</h1>
+            <h1 className="text-5xl md:text-7xl font-light mb-4">
+              {t('about.hero.title')}
+            </h1>
             <p className="text-xl md:text-2xl font-light max-w-2xl mx-auto">
-              Une décennie d&apos;excellence dans le Golfe de Saint-Tropez
+              {t('about.hero.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -181,17 +187,17 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 text-lg text-gray-700 dark:text-gray-300">
               <p className="leading-relaxed">
-                Après une année d&apos;études, de conception et de prise en compte des retours clients, WH voit officiellement le jour début 2018 au cœur du Golfe de Saint-Tropez.
+                {t('about.story.p1')}
               </p>
               <p className="leading-relaxed">
-                La politique de service choisie, la sélection et l&apos;implication des partenaires ainsi que le dynamisme des équipes nous ont permis de devenir rapidement une référence qualité.
+                {t('about.story.p2')}
               </p>
               <motion.button
                 className="flex items-center gap-2 px-6 py-3 bg-gold text-white rounded-full hover:bg-gold/90 transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                En savoir plus
+                {t('about.story.cta')}
                 <ArrowRight size={16} />
               </motion.button>
             </div>
@@ -225,7 +231,9 @@ export default function AboutPage() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl font-light text-center mb-16 text-gray-800 dark:text-white">Nos Valeurs</h2>
+          <h2 className="text-4xl font-light text-center mb-16 text-gray-800 dark:text-white">
+            {t('about.values.title')}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { icon: Calendar, title: "Disponibilité", description: "Service personnalisé 24/7" },
@@ -268,9 +276,9 @@ export default function AboutPage() {
           viewport={{ once: true }}
         >
           <blockquote className="text-3xl md:text-4xl font-light text-gray-800 dark:text-white max-w-4xl mx-auto">
-          &quot;Votre confiance nous savons la mériter&quot;
+            {t('about.quote.text')}
             <footer className="mt-6 text-xl text-gold">
-              - L&apos;équipe Welkom Home
+              {t('about.quote.author')}
             </footer>
           </blockquote>
         </motion.div>

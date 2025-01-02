@@ -44,20 +44,23 @@ export const services = [
 
 export const testimonials = [
   {
-    name: 'Sophie L.',
-    text: 'Un service exceptionnel ! L\'équipe de Welkom Home a rendu notre séjour à Saint-Tropez inoubliable.',
-    rating: 5,
+    id: "1",
+    text: "Service exceptionnel et personnel très attentionné. Notre séjour était parfait.",
+    name: "Sophie M.",
+    rating: 5
   },
   {
-    name: 'Jean-Pierre M.',
-    text: 'La confidentialité et le professionnalisme sont vraiment au rendez-vous. Je recommande vivement.',
-    rating: 5,
+    id: "2",
+    text: "Une expérience inoubliable dans une villa magnifique. Le service de conciergerie est remarquable.",
+    name: "Pierre L.",
+    rating: 5
   },
   {
-    name: 'Isabelle D.',
-    text: 'Des prestations de luxe à des prix raisonnables. Welkom Home a dépassé toutes nos attentes.',
-    rating: 5,
-  },
+    id: "3",
+    text: "Welkom Home a rendu notre séjour magique. Nous reviendrons certainement.",
+    name: "Marie D.",
+    rating: 5
+  }
 ]
 
 export const bentoImages = [

@@ -4,23 +4,29 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Clock, Lock, Star, Home, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useTranslation } from '@/lib/i18n/useTranslation'
+
 const ServicesComp = () => {
+    const { language } = useLanguage()
+    const { t } = useTranslation(language)
+
     const topics = [
         {
             icon: Clock,
-            title: "Service 24/7"
+            title: t('components.services.services.support')
         },
         {
             icon: Lock,
-            title: "Confidentialité garantie"
+            title: t('components.services.services.confidentiality')
         },
         {
             icon: Star,
-            title: "Conciergerie de luxe"
+            title: t('components.services.services.concierge')
         },
         {
             icon: Home,
-            title: "Propriétés d'exception"
+            title: t('components.services.services.properties')
         }
     ]
 
@@ -28,7 +34,6 @@ const ServicesComp = () => {
         <section className="py-16 bg-white">
             <div className="container mx-auto px-6">
                 <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
-                    {/* Contenu gauche */}
                     <div className="w-full lg:w-1/2 max-w-2xl mx-auto lg:mx-0">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -38,19 +43,19 @@ const ServicesComp = () => {
                             className="text-center lg:text-left"
                         >
                             <span className="inline-block px-3 py-1 bg-gold/10 text-gold rounded-full text-sm font-medium mb-6">
-                                NOS SERVICES 
+                                {t('components.services.title')}
                             </span>
                             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                                Une expérience sur mesure 
+                                {t('components.services.subtitle')}
                             </h1>
                             <p className="text-gray-600 text-lg mb-12">
-                                Découvrez notre gamme complète de services haut de gamme, conçue pour répondre à toutes vos attentes et vous offrir une expérience incomparable dans le Golfe de Saint-Tropez.
+                                {t('components.services.description')}
                             </p>
                         </motion.div>
 
                         <div>
                             <h2 className="text-2xl font-semibold mb-6 text-center lg:text-left">
-                                Services principaux
+                                {t('components.services.mainServices')}
                             </h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 max-w-xl mx-auto lg:mx-0">
                                 {topics.map((topic, index) => (
@@ -98,14 +103,13 @@ const ServicesComp = () => {
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                 >
-                                    Découvrir nos services 
+                                    {t('components.services.cta')}
                                     <ArrowRight className="ml-2 w-4 h-4" />
                                 </motion.button>
                             </div>
                         </div>
                     </div>
 
-                    {/* Image droite */}
                     <div className="w-full lg:w-1/2 mb-8 lg:mb-0">
                         <motion.div
                             className="relative aspect-[4/3] md:aspect-[16/9] lg:aspect-auto lg:h-full"

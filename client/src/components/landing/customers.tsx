@@ -1,9 +1,22 @@
+'use client'
+
 import { testimonials } from '@/lib/constant';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 import React from 'react';
+import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const CustomersComp = () => {
+    const { language } = useLanguage()
+    const { t } = useTranslation(language)
+
+    const translatedTestimonials = testimonials.map(testimonial => ({
+        ...testimonial,
+        text: t(`components.customers.testimonials.${testimonial.id}.text`),
+        name: t(`components.customers.testimonials.${testimonial.id}.name`)
+    }))
+
     return (
         <section id="témoignages" className="py-20 bg-white">
             <div className="container mx-auto px-6">
@@ -15,10 +28,10 @@ const CustomersComp = () => {
                         transition={{ duration: 0.5 }}
                         viewport={{ once: true }}
                     >
-                        Avis Clients
+                        {t('components.customers.title')}
                     </motion.h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {testimonials.map((testimonial, index) => (
+                        {translatedTestimonials.map((testimonial, index) => (
                             <motion.div
                                 key={index}
                                 className="bg-gray-50 p-6 rounded-lg shadow-md"

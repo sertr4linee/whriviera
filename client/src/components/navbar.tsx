@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Instagram, Facebook, ChevronDown, Menu, X } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const languages = [
   { code: 'fr', name: 'Français', flag: '🇫🇷' },
@@ -14,8 +16,9 @@ const languages = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [currentLanguage, setCurrentLanguage] = useState('fr')
   const [windowWidth, setWindowWidth] = useState(0)
+  const { language, setLanguage } = useLanguage()
+  const { t } = useTranslation(language)
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
@@ -44,13 +47,13 @@ export default function Navbar() {
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/our-guests" className='text-gray-800 hover:text-gold transition-colors'>
-                Nos hôtes
+                {t('common.menu.guests')}
               </Link>
               <Link href="/join-us" className='text-gray-800 hover:text-gold transition-colors'>
-                Nous Rejoindre
+                {t('common.menu.join')}
               </Link>
               <Link href="/about" className='text-gray-800 hover:text-gold transition-colors'>
-                A propos
+                {t('common.menu.about')}
               </Link>
               <a
                 href="https://www.instagram.com/welkomhome"
@@ -73,7 +76,7 @@ export default function Navbar() {
                   <button
                     className="flex items-center text-gray-800 hover:text-gold transition-colors"
                   >
-                    {languages.find(lang => lang.code === currentLanguage)?.flag}
+                    {languages.find(lang => lang.code === language)?.flag}
                     <ChevronDown size={16} className="ml-1" />
                   </button>
                 </PopoverTrigger>
@@ -82,7 +85,7 @@ export default function Navbar() {
                     <button
                       key={lang.code}
                       className="flex items-center w-full px-2 py-1 hover:bg-gray-100"
-                      onClick={() => setCurrentLanguage(lang.code)}
+                      onClick={() => setLanguage(lang.code as 'fr' | 'en')}
                     >
                       <span className="mr-2">{lang.flag}</span>
                       {lang.name}
@@ -167,8 +170,8 @@ export default function Navbar() {
                       }
                     }}
                   >
-                    {languages.find(lang => lang.code === currentLanguage)?.flag}
-                    <span className="ml-2">{languages.find(lang => lang.code === currentLanguage)?.name}</span>
+                    {languages.find(lang => lang.code === language)?.flag}
+                    <span className="ml-2">{languages.find(lang => lang.code === language)?.name}</span>
                     <ChevronDown size={16} className="ml-1" />
                   </button>
                   <div id="language-dropdown-mobile" className="absolute left-0 mt-2 w-40 bg-white rounded-md shadow-lg hidden">
@@ -177,7 +180,7 @@ export default function Navbar() {
                         key={lang.code}
                         className="flex items-center w-full px-4 py-2 text-left hover:bg-gray-100"
                         onClick={() => {
-                          setCurrentLanguage(lang.code)
+                          setLanguage(lang.code as 'fr' | 'en')
                           const dropdown = document.getElementById('language-dropdown-mobile')
                           if (dropdown) {
                             dropdown.classList.add('hidden')

@@ -4,29 +4,34 @@ import React from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Shield, Home, Star, CheckCircle } from 'lucide-react'
 import { useInView } from 'react-intersection-observer'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 const EngagementComp = () => {
+    const { language } = useLanguage()
+    const { t } = useTranslation(language)
+
     const engagements = [
         {
             icon: Shield,
-            title: "Confiance",
-            description: "Une relation privilégiée avec nos propriétaires",
-            stats: "98%",
-            statsLabel: "de satisfaction"
+            title: t('components.engagement.trust.title'),
+            description: t('components.engagement.trust.description'),
+            stats: t('components.engagement.trust.stats'),
+            statsLabel: t('components.engagement.trust.statsLabel')
         },
         {
             icon: Home,
-            title: "Exclusivité",
-            description: "Des biens d'exception uniquement chez WelkomHOME",
-            stats: "200+",
-            statsLabel: "propriétés"
+            title: t('components.engagement.exclusivity.title'),
+            description: t('components.engagement.exclusivity.description'),
+            stats: t('components.engagement.exclusivity.stats'),
+            statsLabel: t('components.engagement.exclusivity.statsLabel')
         },
         {
             icon: Star,
-            title: "Excellence",
-            description: "Un service premium sur mesure",
-            stats: "24/7",
-            statsLabel: "disponibilité"
+            title: t('components.engagement.excellence.title'),
+            description: t('components.engagement.excellence.description'),
+            stats: t('components.engagement.excellence.stats'),
+            statsLabel: t('components.engagement.excellence.statsLabel')
         }
     ]
 
@@ -52,10 +57,10 @@ const EngagementComp = () => {
                     transition={{ duration: 0.5 }}
                 >
                     <span className="text-gold uppercase tracking-wider font-medium mb-4">
-                        Notre philosophie
+                        {t('components.engagement.philosophy')}
                     </span>
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-6 text-center">
-                        L&apos;engagement <span className="text-gold font-normal">WelkomHOME</span>
+                        {t('components.engagement.title')}
                     </h2>
                 </motion.div>
 
@@ -111,9 +116,7 @@ const EngagementComp = () => {
                                 <CheckCircle className="w-8 h-8 text-gold" />
                             </div>
                             <p className="text-lg text-gray-700">
-                            &quot;Notre engagement est simple : vous offrir une expérience unique 
-                                dans des propriétés d&apos;exception. Chaque maison est sélectionnée 
-                                avec soin pour garantir des moments inoubliables.&quot;
+                                {t('components.engagement.quote')}
                             </p>
                         </div>
                     </div>

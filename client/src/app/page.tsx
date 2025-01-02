@@ -12,6 +12,8 @@ import ServicesComp from "@/components/landing/services";
 import { useState, useEffect } from 'react';
 import OffersComp from "@/components/landing/offers";
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
@@ -20,8 +22,10 @@ export default function LandingPage() {
   const { scrollYProgress } = useScroll()
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8])
-  const [currentLanguage, setCurrentLanguage] = useState('fr')
   const [windowWidth, setWindowWidth] = useState(0)
+  const { language, setLanguage } = useLanguage()
+  const { t } = useTranslation(language)
+  const [currentLanguage, setCurrentLanguage] = useState('fr')
 
   const handleClick = () => {
     window.location.href = "/"
@@ -57,6 +61,11 @@ export default function LandingPage() {
     }
   }, [])
 
+  const handleLanguageChange = (langCode: string) => {
+    setCurrentLanguage(langCode)
+    setLanguage(langCode as 'fr' | 'en')
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <motion.nav
@@ -85,32 +94,18 @@ export default function LandingPage() {
               </Link>
             </motion.div>
             <div className="hidden md:flex items-center space-x-6">
-              {['Nos Hôtes', 'Nous Rejoindre', 'A propos'].map((item) => (
-                <motion.div key={item} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  {item === 'Nos Hôtes' && (
-                    <Link
-                      href="/our-guests"
-                      className={`${scrolled ? 'text-gray-800' : 'text-white'} hover:text-gold transition-colors`}
-                    >
-                      {item}
-                    </Link>
-                  )}
-                  {item === 'Nous Rejoindre' && (
-                    <Link
-                      href="/join-us"
-                      className={`${scrolled ? 'text-gray-800' : 'text-white'} hover:text-gold transition-colors`}
-                    >
-                      {item}
-                    </Link>
-                  )}
-                  {item === 'A propos' && (
-                    <Link
-                      href="/about"
-                      className={`${scrolled ? 'text-gray-800' : 'text-white'} hover:text-gold transition-colors`}
-                    >
-                      {item}
-                    </Link>
-                  )}
+              {[
+                { key: 'guests', href: '/our-guests' },
+                { key: 'join', href: '/join-us' },
+                { key: 'about', href: '/about' }
+              ].map((item) => (
+                <motion.div key={item.key} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <Link
+                    href={item.href}
+                    className={`${scrolled ? 'text-gray-800' : 'text-white'} hover:text-gold transition-colors`}
+                  >
+                    {t(`landing.menu.${item.key}`)}
+                  </Link>
                 </motion.div>
               ))}
               <a
@@ -146,7 +141,7 @@ export default function LandingPage() {
                     <button
                       key={lang.code}
                       className="flex items-center w-full px-2 py-1 hover:bg-gray-100"
-                      onClick={() => setCurrentLanguage(lang.code)}
+                      onClick={() => handleLanguageChange(lang.code)}
                     >
                       <span className="mr-2">{lang.flag}</span>
                       {lang.name}
@@ -163,7 +158,7 @@ export default function LandingPage() {
                   onClick={handleClick}
                 >
                   <LogIn className="mr-2" size={20} />
-                  Se connecter
+                  {t('landing.menu.login')}
                 </motion.button>
             
             </div>
@@ -198,32 +193,18 @@ export default function LandingPage() {
                 <X size={24} />
               </button>
               <div className="flex flex-col items-center space-y-3 mt-16 mb-6">
-              {['Nos Hôtes', 'Nous Rejoindre', 'A propos'].map((item) => (
-                <motion.div key={item} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  {item === 'Nos Hôtes' && (
-                    <Link
-                      href="/our-guests"
-                      className={`${scrolled ? 'text-gray-800' : 'text-white'} hover:text-gold transition-colors`}
-                    >
-                      {item}
-                    </Link>
-                  )}
-                  {item === 'Nous Rejoindre' && (
-                    <Link
-                      href="/join-us"
-                      className={`${scrolled ? 'text-gray-800' : 'text-white'} hover:text-gold transition-colors`}
-                    >
-                      {item}
-                    </Link>
-                  )}
-                  {item === 'A propos' && (
-                    <Link
-                      href="/about"
-                      className={`${scrolled ? 'text-gray-800' : 'text-white'} hover:text-gold transition-colors`}
-                    >
-                      {item}
-                    </Link>
-                  )}
+              {[
+                { key: 'guests', href: '/our-guests' },
+                { key: 'join', href: '/join-us' },
+                { key: 'about', href: '/about' }
+              ].map((item) => (
+                <motion.div key={item.key} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <Link
+                    href={item.href}
+                    className={`${scrolled ? 'text-gray-800' : 'text-white'} hover:text-gold transition-colors`}
+                  >
+                    {t(`landing.menu.${item.key}`)}
+                  </Link>
                 </motion.div>
               ))}
               </div>
@@ -238,7 +219,7 @@ export default function LandingPage() {
                     }}
                   >
                     <LogIn className="mr-2" size={20} />
-                    Se connecter
+                    {t('landing.menu.login')}
                   </motion.button>
               </div>
               <div className="flex flex-col items-center space-y-3">
@@ -282,7 +263,7 @@ export default function LandingPage() {
                         key={lang.code}
                         className="flex items-center w-full px-4 py-2 text-left hover:bg-gray-100"
                         onClick={() => {
-                          setCurrentLanguage(lang.code)
+                          handleLanguageChange(lang.code)
                           const dropdown = document.getElementById('language-dropdown-mobile')
                           if (dropdown) {
                             dropdown.classList.add('hidden')
@@ -328,18 +309,17 @@ export default function LandingPage() {
             transition={{ duration: 1, delay: 0.5 }}
           >
             <h1 className="text-5xl md:text-7xl mb-4 flex items-center justify-center gap-2">
-              <span className="">Welkom</span>
-              <span className="font-thin">HOME</span>
+              {t('landing.hero.title')}
             </h1>
             <p className="text-xl md:text-2xl font-light">
-              Expérience de luxe dans le Golfe de Saint-Tropez
+              {t('landing.hero.subtitle')}
             </p>
             <motion.button
               className="mx-auto mt-8 px-6 sm:px-8 py-3 sm:py-4 bg-transparent backdrop-blur-sm border border-white/30 hover:border-gold/50 text-white text-sm sm:text-lg tracking-wide inline-flex items-center gap-2 sm:gap-3 rounded-lg transition-all duration-300"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <span className="font-light whitespace-nowrap">Découvrir nos services</span>
+              <span className="font-light whitespace-nowrap">{t('landing.hero.cta')}</span>
               <motion.span
                 className="text-lg sm:text-xl"
                 initial={{ x: 0 }}
