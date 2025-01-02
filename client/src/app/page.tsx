@@ -28,7 +28,7 @@ export default function LandingPage() {
   const [currentLanguage, setCurrentLanguage] = useState('fr')
 
   const handleClick = () => {
-    window.location.href = "/"
+    window.location.href = "/login"
   }
 
   useEffect(() => {

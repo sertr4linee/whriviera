@@ -110,7 +110,7 @@ export default function AboutPage() {
           >
             <Image
               src="/backgroundAbout.png"
-              alt="Welkom Home Luxury"
+              alt={t('about.hero.title')}
               fill
               className="object-cover"
               priority
@@ -139,7 +139,6 @@ export default function AboutPage() {
       </div>
 
       <main className="px-6 md:px-12 lg:px-24">
-        {/* Story Section */}
         <motion.div 
           className="max-w-4xl mx-auto py-20"
           initial={{ opacity: 0, y: 20 }}
@@ -164,10 +163,10 @@ export default function AboutPage() {
                 <ArrowRight size={16} />
               </motion.button>
             </div>
-            <div className="relative h-[200px] rounded-2xl overflow-hidden">
+            <div className="relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden">
               <Image
                 src="/logoAbout.png"
-                alt="Notre Histoire"
+                alt={t('about.hero.title')}
                 fill
                 className="object-cover"
               />
