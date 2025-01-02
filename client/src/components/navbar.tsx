@@ -11,7 +11,6 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 const languages = [
   { code: 'fr', name: 'Français', flag: '🇫🇷' },
   { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
 ]
 
 export default function Navbar() {
@@ -19,6 +18,12 @@ export default function Navbar() {
   const [windowWidth, setWindowWidth] = useState(0)
   const { language, setLanguage } = useLanguage()
   const { t } = useTranslation(language)
+
+  const menuItems = [
+    { title: t('common.menu.guests'), href: '/our-guests' },
+    { title: t('common.menu.join'), href: '/join-us' },
+    { title: t('common.menu.about'), href: '/about' }
+  ]
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
@@ -46,15 +51,15 @@ export default function Navbar() {
               </Link>
             </div>
             <div className="hidden md:flex items-center space-x-6">
-              <Link href="/our-guests" className='text-gray-800 hover:text-gold transition-colors'>
-                {t('common.menu.guests')}
-              </Link>
-              <Link href="/join-us" className='text-gray-800 hover:text-gold transition-colors'>
-                {t('common.menu.join')}
-              </Link>
-              <Link href="/about" className='text-gray-800 hover:text-gold transition-colors'>
-                {t('common.menu.about')}
-              </Link>
+              {menuItems.map((item) => (
+                <Link 
+                  key={item.href}
+                  href={item.href} 
+                  className='text-gray-800 hover:text-gold transition-colors'
+                >
+                  {item.title}
+                </Link>
+              ))}
               <a
                 href="https://www.instagram.com/welkomhome"
                 target="_blank"
@@ -125,14 +130,14 @@ export default function Navbar() {
                 <X size={24} />
               </button>
               <div className="flex flex-col items-center space-y-3 mt-16 mb-6">
-                {['Nos hôtes', 'Nous Rejoindre', 'A propos'].map((item) => (
-                  <div key={item}>
+                {menuItems.map((item) => (
+                  <div key={item.href}>
                     <Link
-                      href={`/${item.toLowerCase().replace(' ', '-')}`}
+                      href={item.href}
                       className="text-lg sm:text-xl text-gray-800 hover:text-gold transition-colors"
                       onClick={toggleMenu}
                     >
-                      {item}
+                      {item.title}
                     </Link>
                   </div>
                 ))}

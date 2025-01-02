@@ -20,6 +20,24 @@ export const en = {
       p2: "The chosen service policy, the selection and involvement of partners as well as the dynamism of our teams have allowed us to quickly become a quality reference.",
       cta: "Learn more",
     },
+    timeline: {
+      "2017": {
+        title: "Design Phase",
+        cont: "Market research and initial design of Welkom Home in the Gulf of Saint-Tropez."
+      },
+      "2018": {
+        title: "Launch",
+        cont: "Official launch of Welkom Home. Our service policy, partner selection, and team dynamism quickly established us as a quality reference."
+      },
+      "2020": {
+        title: "Growth",
+        cont: "Expansion of our partner and property network. Our concept prioritizing proximity, availability, and responsiveness deliberately limits our area of operation."
+      },
+      "2023": {
+        title: "Local Reference",
+        cont: "Welkom Home becomes a local quality reference in the highly specific field of property management serving private individuals and tenants."
+      }
+    },
     values: {
       title: "Our Values",
       availability: {

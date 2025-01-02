@@ -10,26 +10,28 @@ type LanguageContextType = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
+const DEFAULT_LANGUAGE: Language = 'fr'
+
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('fr')
-  const [isClient, setIsClient] = useState(false)
+  const [language, setLanguageState] = useState<Language>(DEFAULT_LANGUAGE)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setIsClient(true)
     const storedLanguage = localStorage.getItem('language')
-    if (storedLanguage) {
+    if (storedLanguage && (storedLanguage === 'fr' || storedLanguage === 'en')) {
       setLanguageState(storedLanguage as Language)
+    } else {
+      localStorage.setItem('language', DEFAULT_LANGUAGE)
     }
+    setMounted(true)
   }, [])
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang)
-    if (isClient) {
-      localStorage.setItem('language', lang)
-    }
+    localStorage.setItem('language', lang)
   }
 
-  if (!isClient) {
+  if (!mounted) {
     return null
   }
 
