@@ -127,7 +127,7 @@ export const en = {
     services: {
       title: "OUR SERVICES",
       subtitle: "A Tailored Experience",
-      description: "Discover our complete range of high-end services, designed to meet all your expectations and offer you an incomparable experience in the Golf of Saint-Tropez.",
+      description: "Discover our complete range of high-end services, designed to meet all your expectations and offer you an incomparable experience in the Gulf of Saint-Tropez.",
       mainServices: "Main Services",
       services: {
         support: "24/7 Support",

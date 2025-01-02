@@ -20,6 +20,24 @@ export const fr = {
       p2: "La politique de service choisie, la sélection et l'implication des partenaires ainsi que le dynamisme des équipes nous ont permis de devenir rapidement une référence qualité.",
       cta: "En savoir plus",
     },
+    timeline: {
+      "2017": {
+        title: "Conception",
+        cont: "Début de l'étude de marché et conception du projet Welkom Home au cœur du Golfe de Saint-Tropez."
+      },
+      "2018": {
+        title: "Lancement",
+        cont: "Lancement officiel de Welkom Home. Notre politique de service, la sélection des partenaires et le dynamisme de nos équipes nous permettent de devenir rapidement une référence qualité."
+      },
+      "2020": {
+        title: "Expansion",
+        cont: "Élargissement de notre réseau de partenaires et de propriétés. Notre concept privilégiant la proximité, la disponibilité et la réactivité limite volontairement notre périmètre d'intervention."
+      },
+      "2023": {
+        title: "Référence locale",
+        cont: "Welkom Home devient une référence qualité locale dans le domaine très spécifique de l'intendance au service des particuliers et des locataires."
+      }
+    },
     values: {
       title: "Nos Valeurs",
       availability: {

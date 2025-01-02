@@ -3,9 +3,9 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Clock, Lock, Star, Home, ArrowRight } from 'lucide-react'
-import Image from 'next/image'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { DirectionAwareHover } from '@/components/directioncard'
 
 const ServicesComp = () => {
     const { language } = useLanguage()
@@ -112,19 +112,25 @@ const ServicesComp = () => {
 
                     <div className="w-full lg:w-1/2 mb-8 lg:mb-0">
                         <motion.div
-                            className="relative aspect-[4/3] md:aspect-[16/9] lg:aspect-auto lg:h-full"
                             initial={{ opacity: 0, x: 20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
                             viewport={{ once: true }}
+                            className="h-full"
                         >
-                            <Image
-                                src="/inside.png"
-                                alt="Welkom Home Services"
-                                className="w-full h-full object-cover rounded-2xl"
-                                width={500}
-                                height={500}
-                            />
+                            <DirectionAwareHover
+                                imageUrl="/inside.png"
+                                className="w-full h-[500px] md:h-[600px]"
+                            >
+                                <div className="space-y-2">
+                                    <h3 className="font-semibold text-2xl text-white">
+                                        Villa Bellaudiere
+                                    </h3>
+                                    <p className="text-gray-200 text-sm max-w-[10rem]">
+                                    3900€ at 9000€ / week
+                                    </p>
+                                </div>
+                            </DirectionAwareHover>
                         </motion.div>
                     </div>
                 </div>
