@@ -115,9 +115,14 @@ const EngagementComp = () => {
                             <div className="flex-shrink-0">
                                 <CheckCircle className="w-8 h-8 text-gold" />
                             </div>
-                            <p className="text-lg text-gray-700">
+                            <motion.p 
+                                className="text-lg text-gray-700"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={inView ? { opacity: 1, x: 0 } : {}}
+                                transition={{ duration: 0.7, delay: 0.2 }}
+                            >
                                 {t('components.engagement.quote')}
-                            </p>
+                            </motion.p>
                         </div>
                     </div>
                 </motion.div>
