@@ -40,7 +40,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md"
+        className="fixed top-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-sm shadow-md"
         style={{ borderRadius: '0 0 1rem 1rem' }}
       >
         <div className="container mx-auto px-6 py-4">
@@ -119,17 +119,10 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-white overflow-y-auto md:hidden"
+            className="fixed inset-0 z-[90] bg-white overflow-y-auto md:hidden pt-20"
           >
             <div className="flex flex-col items-center justify-start min-h-screen p-4">
-              <button
-                onClick={toggleMenu}
-                className="absolute top-4 right-4 text-gray-800 focus:outline-none"
-                aria-label="Close menu"
-              >
-                <X size={24} />
-              </button>
-              <div className="flex flex-col items-center space-y-3 mt-16 mb-6">
+              <div className="flex flex-col items-center space-y-6 mt-8">
                 {menuItems.map((item) => (
                   <div key={item.href}>
                     <Link
@@ -142,9 +135,7 @@ export default function Navbar() {
                   </div>
                 ))}
               </div>
-              <div className="w-full max-w-xs flex justify-center mb-6">
-              </div>
-              <div className="flex flex-col items-center space-y-3">
+              <div className="flex flex-col items-center space-y-6 mt-8">
                 <div className="flex space-x-4">
                   <a
                     href="https://www.instagram.com/welkomhome"

@@ -1,86 +1,107 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useToast } from "@/hooks/use-toast"
-import { ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
-import { useTranslation } from '@/lib/i18n/useTranslation'
+import { Icons } from "@/components/icons"
+import { authService } from "@/lib/services/api"
+import { toast } from "sonner"
 
-type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const { toast } = useToast()
-  const { language } = useLanguage()
-  const { t } = useTranslation(language)
+  const [email, setEmail] = React.useState("")
+  const [password, setPassword] = React.useState("")
+
+  React.useEffect(() => {
+    authService.clearStorage()
+  }, [])
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
     setIsLoading(true)
 
-    setTimeout(() => {
+    if (!email || !password) {
+      toast.error("Veuillez remplir tous les champs")
       setIsLoading(false)
-      toast({
-        title: "Success",
-        description: "You have successfully logged in.",
+      return
+    }
+
+    try {
+      console.log("Tentative de connexion avec:", { email })
+      const response = await authService.login({
+        email,
+        password
       })
-    }, 3000)
+
+      console.log("Réponse du serveur:", response)
+
+      if (response.success) {
+        toast.success(response.message || "Connexion réussie")
+        router.push("/dashboard")
+      } else {
+        toast.error(response.message || "Échec de la connexion")
+      }
+    } catch (error: any) {
+      console.error("Erreur de connexion:", error)
+      
+      if (error.response?.status === 401) {
+        toast.error("Email ou mot de passe incorrect")
+      } else if (error.response?.data?.message) {
+        toast.error(error.response.data.message)
+      } else if (error.message) {
+        toast.error(error.message)
+      } else {
+        toast.error("Une erreur est survenue lors de la connexion")
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
-        <div className="grid gap-2">
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
+        <div className="grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              placeholder="name@example.com"
+              placeholder="nom@exemple.com"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="password">
-              Password
-            </Label>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Mot de passe</Label>
             <Input
               id="password"
-              placeholder="Password"
               type="password"
-              autoCapitalize="none"
               autoComplete="current-password"
-              autoCorrect="off"
               disabled={isLoading}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={8}
             />
           </div>
-          <Button disabled={isLoading}>
+          <Button disabled={isLoading || !email || !password}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In
+            Se connecter
           </Button>
-          <Link href="/">
-            <Button 
-              variant="outline" 
-              className="w-full mt-2 flex items-center justify-center gap-2"
-              type="button"
-            >
-              <ArrowLeft size={16} />
-              {t('common.menu.home')}
-            </Button>
-          </Link>
         </div>
       </form>
       <div className="relative">
@@ -89,10 +110,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
+            Ou continuez avec
           </span>
         </div>
       </div>
+      <Button variant="outline" type="button" disabled={isLoading}>
+        {isLoading ? (
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <Icons.google className="mr-2 h-4 w-4" />
+        )}{" "}
+        Google
+      </Button>
     </div>
   )
 }
