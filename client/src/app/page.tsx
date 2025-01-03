@@ -1,9 +1,11 @@
 'use client'
 
 import { images, languages } from "@/lib/constant";
-import { Menu, X, LogIn, Instagram, Facebook, ChevronDown } from 'lucide-react';
+import { Menu, X, LogIn, Instagram, Facebook, ChevronDown, LayoutDashboard } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { authService } from "@/lib/services/api"
+import { useRouter } from "next/navigation"
 import EngagementComp from "@/components/landing/engagement";
 import CustomersComp from "@/components/landing/customers"
 import ContactFormComp from "@/components/landing/contact";
@@ -16,6 +18,7 @@ import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 export default function LandingPage() {
+  const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -28,7 +31,11 @@ export default function LandingPage() {
   const [currentLanguage, setCurrentLanguage] = useState('fr')
 
   const handleClick = () => {
-    window.location.href = "/login"
+    if (authService.isAuthenticated()) {
+      router.push('/dashboard')
+    } else {
+      router.push('/login')
+    }
   }
 
   useEffect(() => {
@@ -157,8 +164,17 @@ export default function LandingPage() {
                   whileTap={{ scale: 0.9 }}
                   onClick={handleClick}
                 >
-                  <LogIn className="mr-2" size={20} />
-                  {t('landing.menu.login')}
+                  {authService.isAuthenticated() ? (
+                    <>
+                      <LayoutDashboard className="mr-2" size={20} />
+                      Dashboard
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="mr-2" size={20} />
+                      {t('landing.menu.login')}
+                    </>
+                  )}
                 </motion.button>
             
             </div>
@@ -209,18 +225,27 @@ export default function LandingPage() {
               ))}
               </div>
               <div className="w-full max-w-xs flex justify-center mb-6">
-                  <motion.button
-                    className="flex items-center justify-center w-full px-4 py-2 text-black bg-gold rounded-full transition-colors"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      handleClick()
-                      toggleMenu()
-                    }}
-                  >
-                    <LogIn className="mr-2" size={20} />
-                    {t('landing.menu.login')}
-                  </motion.button>
+                <motion.button
+                  className="flex items-center justify-center w-full px-4 py-2 text-black bg-gold rounded-full transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    handleClick()
+                    toggleMenu()
+                  }}
+                >
+                  {authService.isAuthenticated() ? (
+                    <>
+                      <LayoutDashboard className="mr-2" size={20} />
+                      Dashboard
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="mr-2" size={20} />
+                      {t('landing.menu.login')}
+                    </>
+                  )}
+                </motion.button>
               </div>
               <div className="flex flex-col items-center space-y-3">
                 <div className="flex space-x-4">
