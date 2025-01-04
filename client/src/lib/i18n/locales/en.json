@@ -1,0 +1,27 @@
+{
+  "components": {
+    "contact": {
+      "title": "Contact Us",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "send": "Send",
+      "subtitle": "We are here to answer all your questions and support you in your project.",
+      "contact_info": {
+        "title": "Contact Us",
+        "email": {
+          "label": "Email",
+          "value": "contact@welkomhome.com"
+        },
+        "phone": {
+          "label": "Phone",
+          "value": "+33 6 22 42 37 54"
+        },
+        "address": {
+          "label": "Address",
+          "value": "123 Champs-Élysées Avenue, 75008 Paris"
+        }
+      }
+    }
+  }
+} 

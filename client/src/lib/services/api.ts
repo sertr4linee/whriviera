@@ -1,25 +1,14 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
-
-// Créer une instance axios avec la configuration de base
 const api = axios.create({
-    baseURL: API_URL,
+    baseURL: 'http://localhost:5000/api',
     headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    },
-    withCredentials: false
+        'Content-Type': 'application/json'
+    }
 });
 
-// Intercepteur pour ajouter le token JWT aux requêtes
 api.interceptors.request.use(
     (config) => {
-        // Ajouter le token à toutes les requêtes sauf login et register
-        if (config.url?.includes('/auth/login') || config.url?.includes('/auth/register')) {
-            return config;
-        }
-        
         const token = localStorage.getItem('token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
@@ -31,19 +20,47 @@ api.interceptors.request.use(
     }
 );
 
-// Intercepteur pour gérer les réponses
-api.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        if (error.response?.status === 401) {
-            // Si non autorisé, rediriger vers la page de connexion
-            localStorage.removeItem('token');
-            window.location.href = '/login';
+export const authService = {
+    async login(email: string, password: string) {
+        try {
+            const response = await api.post('/auth/login', { email, password });
+            if (response.data.token) {
+                localStorage.setItem('token', response.data.token);
+            }
+            return response.data;
+        } catch (error) {
+            this.clearStorage();
+            throw error;
         }
-        console.error('API Error:', error.response?.data || error);
-        return Promise.reject(error);
+    },
+
+    async register(email: string, password: string) {
+        try {
+            const response = await api.post('/auth/register', { email, password });
+            return response.data;
+        } catch (error) {
+            this.clearStorage();
+            throw error;
+        }
+    },
+
+    logout() {
+        this.clearStorage();
+    },
+
+    isAuthenticated() {
+        return !!localStorage.getItem('token');
+    },
+
+    clearStorage() {
+        localStorage.removeItem('token');
+        sessionStorage.clear();
+    },
+
+    getToken() {
+        return localStorage.getItem('token');
     }
-);
+};
 
 // Types
 export interface LoginDto {
@@ -58,61 +75,6 @@ export interface AuthResponse {
     token: string;
     message: string;
 }
-
-// Service d'authentification
-export const authService = {
-    clearStorage() {
-        localStorage.clear();
-    },
-
-    async login(data: LoginDto): Promise<AuthResponse> {
-        try {
-            this.clearStorage();
-            const response = await api.post<AuthResponse>('/auth/login', data);
-            if (response.data.token) {
-                localStorage.setItem('token', response.data.token);
-            }
-            return response.data;
-        } catch (error: any) {
-            console.error('Login error:', error.response?.data || error);
-            throw error;
-        }
-    },
-
-    async register(data: RegisterDto): Promise<AuthResponse> {
-        try {
-            this.clearStorage();
-            const response = await api.post<AuthResponse>('/auth/register', data);
-            if (response.data.token) {
-                localStorage.setItem('token', response.data.token);
-            }
-            return response.data;
-        } catch (error) {
-            console.error('Register error:', error);
-            throw error;
-        }
-    },
-
-    logout() {
-        this.clearStorage();
-    },
-
-    getToken() {
-        return localStorage.getItem('token');
-    },
-
-    isAuthenticated() {
-        const token = this.getToken();
-        if (!token) return false;
-        
-        try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            return payload.exp * 1000 > Date.now();
-        } catch {
-            return false;
-        }
-    }
-};
 
 // Service de gestion des rôles
 export interface RoleDto {
@@ -178,5 +140,129 @@ export const userService = {
 
     async removeRole(email: string, role: string): Promise<void> {
         await api.delete(`/auth/users/${email}/roles/${role}`);
+    }
+};
+
+// Types pour les listings
+export interface ListingDto {
+    id: string;
+    type: string[];
+    bedrooms: number;
+    bathrooms: number;
+    parking: number;
+    size: number;
+    price: number;
+    description: string;
+    name: string;
+    isActive: boolean;
+    address: string;
+    latitude: number;
+    longitude: number;
+    images: ListingImageDto[];
+    createdAt: string;
+    updatedAt?: string;
+}
+
+export interface CreateListingDto {
+    type: string[];
+    bedrooms: number;
+    bathrooms: number;
+    parking: number;
+    size: number;
+    price: number;
+    description: string;
+    name: string;
+    address: string;
+    latitude: number;
+    longitude: number;
+}
+
+export interface UpdateListingDto {
+    type?: string[];
+    bedrooms?: number;
+    bathrooms?: number;
+    parking?: number;
+    size?: number;
+    price?: number;
+    description?: string;
+    name?: string;
+    address?: string;
+    latitude?: number;
+    longitude?: number;
+}
+
+export interface ListingImageDto {
+    id: string;
+    url: string;
+    isHeader: boolean;
+}
+
+// Service de gestion des listings
+export const listingService = {
+    async getAllListings(isActive?: boolean): Promise<ListingDto[]> {
+        const params = isActive !== undefined ? `?isActive=${isActive}` : '';
+        const response = await api.get<ListingDto[]>(`/listing${params}`);
+        return response.data;
+    },
+
+    async getListing(id: string): Promise<ListingDto> {
+        const response = await api.get<ListingDto>(`/listing/${id}`);
+        return response.data;
+    },
+
+    async createListing(data: CreateListingDto): Promise<ListingDto> {
+        const response = await api.post<ListingDto>('/listing', data);
+        return response.data;
+    },
+
+    async updateListing(id: string, data: UpdateListingDto): Promise<ListingDto> {
+        const response = await api.put<ListingDto>(`/listing/${id}`, data);
+        return response.data;
+    },
+
+    async deleteListing(id: string): Promise<void> {
+        await api.delete(`/listing/${id}`);
+    },
+
+    async toggleListingActive(id: string): Promise<ListingDto> {
+        const response = await api.patch<ListingDto>(`/listing/${id}/toggle-active`);
+        return response.data;
+    },
+
+    async uploadImages(listingId: string, images: File[]): Promise<ListingDto> {
+        try {
+            const formData = new FormData();
+            images.forEach(image => {
+                formData.append('images', image);
+            });
+            
+            const response = await api.post<ListingDto>(
+                `/listing/${listingId}/images`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    maxContentLength: Infinity,
+                    maxBodyLength: Infinity
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Upload error:', error);
+            if (axios.isAxiosError(error)) {
+                throw new Error(error.response?.data?.message || 'Erreur lors de l\'upload des images');
+            }
+            throw error;
+        }
+    },
+
+    async setHeaderImage(listingId: string, imageId: string): Promise<ListingDto> {
+        const response = await api.patch<ListingDto>(`/listing/${listingId}/images/${imageId}/set-header`);
+        return response.data;
+    },
+
+    async deleteImage(listingId: string, imageId: string): Promise<void> {
+        await api.delete(`/listing/${listingId}/images/${imageId}`);
     }
 }; 

@@ -53,13 +53,31 @@ export const testimonials = [
     id: "2",
     text: "Une expérience inoubliable dans une villa magnifique. Le service de conciergerie est remarquable.",
     name: "Pierre L.",
-    rating: 5
+    rating: 4
   },
   {
     id: "3",
     text: "Welkom Home a rendu notre séjour magique. Nous reviendrons certainement.",
     name: "Marie D.",
+    rating: 4
+  },
+  {
+    id: "4",
+    text: "La villa était absolument sublime et l'équipe a su répondre à toutes nos attentes. Un service haut de gamme !",
+    name: "Elodie F.",
+    rating: 3
+  },
+  {
+    id: "5",
+    text: "Une expérience de location de luxe sans faille. L'attention aux détails et la réactivité de l'équipe sont remarquables.",
+    name: "Jean C.",
     rating: 5
+  },
+  {
+    id: "6",
+    text: "Des prestations d'exception et un cadre idyllique. Welkom Home a dépassé toutes nos espérances.",
+    name: "Frantz V.",
+    rating: 4
   }
 ]
 

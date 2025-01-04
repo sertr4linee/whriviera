@@ -16,6 +16,7 @@ import OffersComp from "@/components/landing/offers";
 import Link from 'next/link';
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { Footer } from "@/components/landing/footer";
 
 export default function LandingPage() {
   const router = useRouter()
@@ -343,6 +344,9 @@ export default function LandingPage() {
               className="mx-auto mt-8 px-6 sm:px-8 py-3 sm:py-4 bg-transparent backdrop-blur-sm border border-white/30 hover:border-gold/50 text-white text-sm sm:text-lg tracking-wide inline-flex items-center gap-2 sm:gap-3 rounded-lg transition-all duration-300"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                router.push('/our-guests')
+              }}
             >
               <span className="font-light whitespace-nowrap">{t('landing.hero.cta')}</span>
               <motion.span
@@ -363,6 +367,7 @@ export default function LandingPage() {
       <CustomersComp />
       <LifestyleComp />
       <ContactFormComp />
+      <Footer />
     </div>
   )
 }

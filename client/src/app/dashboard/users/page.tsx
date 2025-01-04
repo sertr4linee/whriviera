@@ -67,7 +67,7 @@ export default function UsersPage() {
     }
 
     try {
-      await authService.register(newUser)
+      await authService.register(newUser.email, newUser.password)
       toast.success("Utilisateur créé avec succès")
       setNewUser({ email: "", password: "" })
       setIsAddUserOpen(false)

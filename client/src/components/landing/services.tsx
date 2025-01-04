@@ -7,6 +7,16 @@ import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { DirectionAwareHover } from '@/components/directioncard'
 
+const fadeInUpVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+}
+
+const fadeInRightVariants = {
+    hidden: { opacity: 0, x: 20 },
+    visible: { opacity: 1, x: 0 }
+}
+
 const ServicesComp = () => {
     const { language } = useLanguage()
     const { t } = useTranslation(language)
@@ -36,9 +46,10 @@ const ServicesComp = () => {
                 <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
                     <div className="w-full lg:w-1/2 max-w-2xl mx-auto lg:mx-0">
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
+                            variants={fadeInUpVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            transition={{ duration: 0.6 }}
                             viewport={{ once: true }}
                             className="text-center lg:text-left"
                         >
@@ -54,18 +65,26 @@ const ServicesComp = () => {
                         </motion.div>
 
                         <div>
-                            <h2 className="text-2xl font-semibold mb-6 text-center lg:text-left">
+                            <motion.h2 
+                                variants={fadeInUpVariants}
+                                initial="hidden"
+                                whileInView="visible"
+                                transition={{ duration: 0.6, delay: 0.2 }}
+                                viewport={{ once: true }}
+                                className="text-2xl font-semibold mb-6 text-center lg:text-left"
+                            >
                                 {t('components.services.mainServices')}
-                            </h2>
+                            </motion.h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 max-w-xl mx-auto lg:mx-0">
                                 {topics.map((topic, index) => (
                                     <motion.div
                                         key={topic.title}
-                                        className="group relative p-4 bg-white rounded-2xl border border-gray-100 hover:border-gold/20 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                                        variants={fadeInUpVariants}
+                                        initial="hidden"
+                                        whileInView="visible"
+                                        transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
                                         viewport={{ once: true }}
+                                        className="group relative p-4 bg-white rounded-2xl border border-gray-100 hover:border-gold/20 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
                                     >
                                         <motion.div
                                             className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-gold/30 to-gold/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -97,24 +116,35 @@ const ServicesComp = () => {
                                 ))}
                             </div>
 
-                            <div className="text-center lg:text-left">
+                            <motion.div 
+                                variants={fadeInUpVariants}
+                                initial="hidden"
+                                whileInView="visible"
+                                transition={{ duration: 0.6, delay: 0.6 }}
+                                viewport={{ once: true }}
+                                className="text-center lg:text-left"
+                            >
                                 <motion.button
                                     className="inline-flex items-center px-6 py-3 text-gray-600 rounded-lg border border-gray-200 hover:border-gold/20 transition-colors"
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
+                                    onClick={() => {
+                                        window.location.href = '/our-guests'
+                                    }}
                                 >
                                     {t('components.services.cta')}
                                     <ArrowRight className="ml-2 w-4 h-4" />
                                 </motion.button>
-                            </div>
+                            </motion.div>
                         </div>
                     </div>
 
                     <div className="w-full lg:w-1/2 mb-8 lg:mb-0">
                         <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5 }}
+                            variants={fadeInRightVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            transition={{ duration: 0.8 }}
                             viewport={{ once: true }}
                             className="h-full"
                         >
@@ -127,7 +157,7 @@ const ServicesComp = () => {
                                         Villa Bellaudiere
                                     </h3>
                                     <p className="text-gray-200 text-sm max-w-[10rem]">
-                                    3900€ at 9000€ / week
+                                        3900€ at 9000€ / week
                                     </p>
                                 </div>
                             </DirectionAwareHover>

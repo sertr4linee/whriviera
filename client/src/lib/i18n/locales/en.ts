@@ -1,71 +1,10 @@
-export const en = {
-  common: {
-    menu: {
-      home: "Home",
-      about: "About",
-      services: "Services",
-      contact: "Contact",
-      guests: "Our Guests",
-      join: "Join Us",
-    },
-  },
-  about: {
-    hero: {
-      title: "Our Story",
-      subtitle: "A decade of excellence in the Golf of Saint-Tropez",
-    },
-    story: {
-      title: "Our Journey",
-      p1: "After a year of studies, design and customer feedback, WH officially launched in early 2018 in the heart of the Golf of Saint-Tropez.",
-      p2: "The chosen service policy, the selection and involvement of partners as well as the dynamism of our teams have allowed us to quickly become a quality reference.",
-      cta: "Learn more",
-    },
-    timeline: {
-      "2017": {
-        title: "Design Phase",
-        cont: "Market research and initial design of Welkom Home in the Gulf of Saint-Tropez."
-      },
-      "2018": {
-        title: "Launch",
-        cont: "Official launch of Welkom Home. Our service policy, partner selection, and team dynamism quickly established us as a quality reference."
-      },
-      "2020": {
-        title: "Growth",
-        cont: "Expansion of our partner and property network. Our concept prioritizing proximity, availability, and responsiveness deliberately limits our area of operation."
-      },
-      "2023": {
-        title: "Local Reference",
-        cont: "Welkom Home becomes a local quality reference in the highly specific field of property management serving private individuals and tenants."
-      }
-    },
-    values: {
-      title: "Our Values",
-      availability: {
-        title: "Availability",
-        description: "24/7 personalized service",
-      },
-      proximity: {
-        title: "Proximity",
-        description: "A tailored approach",
-      },
-      comfort: {
-        title: "Comfort",
-        description: "Excellence and well-being",
-      },
-      excellence: {
-        title: "Excellence",
-        description: "Impeccable quality",
-      },
-    },
-    quote: {
-      text: "We know how to earn your trust",
-      author: "The Welkom Home team",
-    },
-  },
+import { TranslationSchema } from '../types'
+
+export const en: TranslationSchema = {
   landing: {
     hero: {
       title: "Welkom HOME",
-      subtitle: "Luxury experience in the Golf of Saint-Tropez",
+      subtitle: "Luxury experience in the Gulf of Saint-Tropez",
       cta: "Discover our services"
     },
     menu: {
@@ -81,17 +20,46 @@ export const en = {
       name: "Name",
       email: "Email",
       message: "Message",
-      send: "Send"
+      send: "Send",
+      subtitle: "We are here to answer all your questions and support you in your project.",
+      contact_info: {
+        title: "Contact Us",
+        email: {
+          label: "Email",
+          value: "contact@welkomhome.com"
+        },
+        phone: {
+          label: "Phone",
+          value: "+33 6 22 42 37 54"
+        },
+        address: {
+          label: "Address",
+          value: "123 Champs-Élysées Avenue, 75008 Paris"
+        }
+      }
+    },
+    services: {
+      title: "OUR SERVICES",
+      subtitle: "A Tailored Experience",
+      description: "Discover our complete range of high-end services, designed to meet all your expectations and offer you an incomparable experience in the Gulf of Saint-Tropez.",
+      mainServices: "Main Services",
+      services: {
+        support: "24/7 Support",
+        confidentiality: "Guaranteed Confidentiality",
+        concierge: "Luxury Concierge",
+        properties: "Exceptional Properties"
+      },
+      cta: "Discover our services"
     },
     customers: {
-      title: "Customer Reviews",
+      title: "Customer Testimonials",
       testimonials: {
         1: {
           text: "Exceptional service and very attentive staff. Our stay was perfect.",
           name: "Sophie M."
         },
         2: {
-          text: "An unforgettable experience in a magnificent villa. The concierge service is remarkable.",
+          text: "An unforgettable experience in a beautiful villa. Thanks to the whole team!",
           name: "Peter L."
         },
         3: {
@@ -127,7 +95,7 @@ export const en = {
       title: "Lifestyle",
       panoramic: {
         title: "Panoramic View",
-        description: "Enjoy breathtaking views of the Golf of Saint-Tropez from your terrace. An exceptional setting for unforgettable moments."
+        description: "Enjoy breathtaking views of the Gulf of Saint-Tropez from your terrace. An exceptional setting for unforgettable moments."
       },
       design: {
         title: "Design & Comfort",
@@ -141,19 +109,6 @@ export const en = {
         title: "Equipped Kitchen",
         description: "Modern, fully equipped kitchens to satisfy the most demanding amateur chefs."
       }
-    },
-    services: {
-      title: "OUR SERVICES",
-      subtitle: "A Tailored Experience",
-      description: "Discover our complete range of high-end services, designed to meet all your expectations and offer you an incomparable experience in the Gulf of Saint-Tropez.",
-      mainServices: "Main Services",
-      services: {
-        support: "24/7 Support",
-        confidentiality: "Guaranteed Confidentiality",
-        concierge: "Luxury Concierge",
-        properties: "Exceptional Properties"
-      },
-      cta: "Discover our services"
     },
     offers: {
       title: "Our Exclusive Offers"

@@ -1,28 +1,23 @@
 import { useCallback } from 'react'
 import { fr } from './locales/fr'
 import { en } from './locales/en'
+import type { Language, TranslationSchema } from './types'
 
-const translations = {
+const translations: Record<Language, TranslationSchema> = {
   fr,
   en,
-} as const
-
-export type Language = keyof typeof translations
-export type TranslationKey = keyof typeof fr
-
-type NestedTranslations = {
-  [key: string]: string | NestedTranslations
 }
 
 export function useTranslation(locale: Language = 'fr') {
   const t = useCallback((key: string) => {
     const keys = key.split('.')
-    let value: string | NestedTranslations = translations[locale]
+    let value: any = translations[locale]
     
     for (const k of keys) {
-      if (typeof value === 'object' && k in value) {
+      if (value && typeof value === 'object' && k in value) {
         value = value[k]
       } else {
+        console.warn(`Translation key not found: ${key} in locale ${locale}`)
         return key
       }
     }

@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { authService } from "@/lib/services/api"
-import { Users, UserCog, LayoutDashboard, LogOut, Home } from "lucide-react"
+import { Users, UserCog, LayoutDashboard, LogOut, Home, Building2 } from "lucide-react"
 import { motion } from "framer-motion"
 
 export default function DashboardLayout({
@@ -38,6 +38,11 @@ export default function DashboardLayout({
       label: "Tableau de bord",
       icon: LayoutDashboard,
       href: "/dashboard",
+    },
+    {
+      label: "Listings",
+      icon: Building2,
+      href: "/dashboard/listings",
     },
     {
       label: "Utilisateurs",

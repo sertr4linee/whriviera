@@ -34,10 +34,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     try {
       console.log("Tentative de connexion avec:", { email })
-      const response = await authService.login({
-        email,
-        password
-      })
+      const response = await authService.login(email, password)
 
       console.log("Réponse du serveur:", response)
 

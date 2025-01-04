@@ -1,67 +1,6 @@
-export const fr = {
-  common: {
-    menu: {
-      home: "Accueil",
-      about: "À propos",
-      services: "Services",
-      contact: "Contact",
-      guests: "Nos hôtes",
-      join: "Nous Rejoindre",
-    },
-  },
-  about: {
-    hero: {
-      title: "Notre Histoire",
-      subtitle: "Une décennie d'excellence dans le Golfe de Saint-Tropez",
-    },
-    story: {
-      title: "Notre Parcours",
-      p1: "Après une année d'études, de conception et de prise en compte des retours clients, WH voit officiellement le jour début 2018 au cœur du Golfe de Saint-Tropez.",
-      p2: "La politique de service choisie, la sélection et l'implication des partenaires ainsi que le dynamisme des équipes nous ont permis de devenir rapidement une référence qualité.",
-      cta: "En savoir plus",
-    },
-    timeline: {
-      "2017": {
-        title: "Conception",
-        cont: "Début de l'étude de marché et conception du projet Welkom Home au cœur du Golfe de Saint-Tropez."
-      },
-      "2018": {
-        title: "Lancement",
-        cont: "Lancement officiel de Welkom Home. Notre politique de service, la sélection des partenaires et le dynamisme de nos équipes nous permettent de devenir rapidement une référence qualité."
-      },
-      "2020": {
-        title: "Expansion",
-        cont: "Élargissement de notre réseau de partenaires et de propriétés. Notre concept privilégiant la proximité, la disponibilité et la réactivité limite volontairement notre périmètre d'intervention."
-      },
-      "2023": {
-        title: "Référence locale",
-        cont: "Welkom Home devient une référence qualité locale dans le domaine très spécifique de l'intendance au service des particuliers et des locataires."
-      }
-    },
-    values: {
-      title: "Nos Valeurs",
-      availability: {
-        title: "Disponibilité",
-        description: "Service personnalisé 24/7",
-      },
-      proximity: {
-        title: "Proximité",
-        description: "Une approche sur mesure",
-      },
-      comfort: {
-        title: "Confort",
-        description: "Excellence et bien-être",
-      },
-      excellence: {
-        title: "Excellence",
-        description: "Qualité irréprochable",
-      },
-    },
-    quote: {
-      text: "Votre confiance nous savons la mériter",
-      author: "L'équipe Welkom Home",
-    },
-  },
+import { TranslationSchema } from '../types'
+
+export const fr: TranslationSchema = {
   landing: {
     hero: {
       title: "Welkom HOME",
@@ -81,17 +20,46 @@ export const fr = {
       name: "Nom",
       email: "Email",
       message: "Message",
-      send: "Envoyer"
+      send: "Envoyer",
+      subtitle: "Nous sommes là pour répondre à toutes vos questions et vous accompagner dans votre projet.",
+      contact_info: {
+        title: "Contactez-nous",
+        email: {
+          label: "Email",
+          value: "contact@welkomhome.com"
+        },
+        phone: {
+          label: "Téléphone",
+          value: "+33 6 22 42 37 54"
+        },
+        address: {
+          label: "Adresse",
+          value: "123 Avenue des Champs-Élysées, 75008 Paris"
+        }
+      }
+    },
+    services: {
+      title: "NOS SERVICES",
+      subtitle: "Une expérience sur mesure",
+      description: "Découvrez notre gamme complète de services haut de gamme, conçue pour répondre à toutes vos attentes et vous offrir une expérience incomparable dans le Golfe de Saint-Tropez.",
+      mainServices: "Services principaux",
+      services: {
+        support: "Service 24/7",
+        confidentiality: "Confidentialité garantie",
+        concierge: "Conciergerie de luxe",
+        properties: "Propriétés d'exception"
+      },
+      cta: "Découvrir nos services"
     },
     customers: {
-      title: "Avis Clients",
+      title: "Témoignages de nos clients",
       testimonials: {
         1: {
           text: "Service exceptionnel et personnel très attentionné. Notre séjour était parfait.",
           name: "Sophie M."
         },
         2: {
-          text: "Une expérience inoubliable dans une villa magnifique. Le service de conciergerie est remarquable.",
+          text: "Une expérience inoubliable dans une villa magnifique. Merci à toute l'équipe !",
           name: "Pierre L."
         },
         3: {
@@ -141,19 +109,6 @@ export const fr = {
         title: "Cuisine Équipée",
         description: "Des cuisines modernes entièrement équipées pour satisfaire les plus exigeants des chefs amateurs."
       }
-    },
-    services: {
-      title: "NOS SERVICES",
-      subtitle: "Une expérience sur mesure",
-      description: "Découvrez notre gamme complète de services haut de gamme, conçue pour répondre à toutes vos attentes et vous offrir une expérience incomparable dans le Golfe de Saint-Tropez.",
-      mainServices: "Services principaux",
-      services: {
-        support: "Service 24/7",
-        confidentiality: "Confidentialité garantie",
-        concierge: "Conciergerie de luxe",
-        properties: "Propriétés d'exception"
-      },
-      cta: "Découvrir nos services"
     },
     offers: {
       title: "Nos Offres Exclusives"
