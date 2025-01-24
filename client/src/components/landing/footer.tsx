@@ -1,7 +1,8 @@
 'use client'
 
-import { Github, Instagram, Mail, Twitter } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { Instagram, Mail } from 'lucide-react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -33,8 +34,14 @@ export function Footer() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex gap-4"
+            className="flex items-center gap-6"
           >
+            <Link href="/help" className="text-gray-500 hover:text-gray-900 transition-colors">
+              FAQ
+            </Link>
+            <Link href="/terms" className="text-gray-500 hover:text-gray-900 transition-colors">
+              Terms
+            </Link>
             <a
               href="mailto:contact@welkomhome.com"
               className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
@@ -42,7 +49,7 @@ export function Footer() {
               <Mail className="h-5 w-5" />
             </a>
             <a
-              href="https://twitter.com/welkomhome"
+              href="https://instagram.com/welkomhome"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"

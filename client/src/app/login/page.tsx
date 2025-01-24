@@ -3,14 +3,9 @@
 import Image from "next/image"
 import Link from "next/link"
 import { UserAuthForm } from "@/components/userauthform"
-import { useLanguage } from '@/lib/i18n/LanguageContext'
-import { useTranslation } from '@/lib/i18n/useTranslation'
 
 
 export default function AuthenticationPage() {
-  const { language } = useLanguage()
-  const { t } = useTranslation(language)
-
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       <div className="relative hidden lg:flex flex-col bg-zinc-900 text-white">
@@ -53,13 +48,13 @@ export default function AuthenticationPage() {
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
-              {t('landing.menu.login')}
+              Se connecter
             </h1>
             <p className="text-sm text-muted-foreground">
               Entrez votre email pour vous connecter
             </p>
           </div>
-          <UserAuthForm />
+          <UserAuthForm type="login" />
           <p className="px-8 text-center text-sm text-muted-foreground">
             En continuant, vous acceptez nos{" "}
             <Link

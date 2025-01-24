@@ -1,103 +1,166 @@
 declare namespace H {
-  namespace geo {
-    class Point {
-      lat: number
-      lng: number
-      constructor(lat: number, lng: number)
-    }
+  interface MapEvents {
+    addEventListener(eventType: string, handler: (event: Event) => void): void;
+    removeEventListener(eventType: string, handler: (event: Event) => void): void;
   }
 
-  interface MapOptions {
-    center: { lat: number; lng: number }
-    zoom: number
-    pixelRatio?: number
-    padding?: { top: number; right: number; bottom: number; left: number }
+  interface ViewPort {
+    resize(): void;
   }
 
   class Map {
-    constructor(element: HTMLElement, layer: any, options: MapOptions)
-    setCenter(point: { lat: number; lng: number }): void
-    addObject(object: any): void
-    getViewPort(): { resize: () => void }
-    dispose(): void
-    addEventListener(eventName: string, handler: (event: any) => void): void
-    screenToGeo(x: number, y: number): H.geo.Point
+    constructor(container: HTMLElement, layers: DefaultLayers['vector']['normal']['map'], options?: MapOptions);
+    setCenter(point: { lat: number; lng: number }): void;
+    setZoom(zoom: number): void;
+    addObject(object: MapObject): void;
+    removeObject(object: MapObject): void;
+    getCenter(): { lat: number; lng: number };
+    getZoom(): number;
+    getObjects(): MapObject[];
+    getViewPort(): ViewPort;
+    dispose(): void;
+    addEventListener(eventType: string, handler: (event: Event) => void): void;
+    removeEventListener(eventType: string, handler: (event: Event) => void): void;
+  }
+
+  interface Platform {
+    createDefaultLayers(): DefaultLayers;
+  }
+
+  interface DefaultLayers {
+    vector: {
+      normal: {
+        map: object;
+      };
+    };
+  }
+
+  type MapObjectType = 'Marker' | 'Circle' | 'Polyline' | 'Polygon';
+
+  interface MapObject {
+    type: MapObjectType;
+    setGeometry(geometry: Point | LineString | Polygon): void;
+    setVisibility(visible: boolean): void;
+    setData(data: Record<string, unknown>): void;
+    getData(): Record<string, unknown>;
+    setStyle(style: Style): void;
+  }
+
+  interface Style {
+    strokeColor?: string;
+    fillColor?: string;
+    lineWidth?: number;
+    lineDash?: number[];
+  }
+
+  interface Point {
+    lat: number;
+    lng: number;
+  }
+
+  interface LineString {
+    points: Point[];
+  }
+
+  interface Polygon {
+    points: Point[];
+  }
+
+  interface Event {
+    type: string;
+    target: MapObject;
+    currentTarget: Map;
   }
 
   namespace service {
-    interface LayerOptions {
-      tileSize?: number
-      ppi?: number
-    }
-
-    interface Platform {
-      createDefaultLayers(options?: LayerOptions): any
-      getGeocodingService(): GeocodingService
-    }
-
     class Platform {
-      constructor(options: { apikey: string })
-      createDefaultLayers(options?: LayerOptions): any
-      getGeocodingService(): GeocodingService
-    }
-
-    class GeocodingService {
-      geocode(
-        params: { 
-          searchText: string; 
-          jsonattributes?: number;
-          country?: string;
-        },
-        onSuccess: (result: any) => void,
-        onError: (error: any) => void
-      ): void
-      reverseGeocode(
-        params: { 
-          prox: string;
-          mode: string;
-          maxresults: number;
-          jsonattributes: number;
-        },
-        onSuccess: (result: any) => void,
-        onError: (error: any) => void
-      ): void
+      constructor(config: PlatformConfig);
+      createDefaultLayers(): DefaultLayers;
     }
   }
 
   namespace map {
-    interface MarkerOptions {
-      volatility?: boolean
-      draggable?: boolean
-    }
-
-    class Marker {
-      constructor(point: { lat: number; lng: number }, options?: MarkerOptions)
-      setGeometry(point: { lat: number; lng: number }): void
-      addEventListener(eventName: string, handler: (event: any) => void): void
-      getGeometry(): H.geo.Point
+    class Marker implements MapObject {
+      constructor(coords: { lat: number; lng: number });
+      type: MapObjectType;
+      setGeometry(geometry: Point | LineString | Polygon): void;
+      setVisibility(visible: boolean): void;
+      setData(data: Record<string, unknown>): void;
+      getData(): Record<string, unknown>;
+      setStyle(style: Style): void;
     }
   }
 
   namespace mapevents {
     class Behavior {
-      constructor(events: MapEvents)
-      disable(): void
-      enable(): void
+      constructor(events: MapEvents);
     }
-
     class MapEvents {
-      constructor(map: Map)
+      constructor(map: Map);
     }
   }
 
   namespace ui {
-    interface Control {
-      setAlignment(alignment: string): void
-    }
-
     class UI {
-      static createDefault(map: Map, layers: any): UI
-      getControl(name: string): Control
+      static createDefault(map: Map, layers: DefaultLayers): UI;
     }
   }
-} 
+
+  interface Service {
+    service: typeof service;
+    map: typeof map;
+    mapevents: typeof mapevents;
+    ui: typeof ui;
+    Map: typeof Map;
+  }
+
+  interface PlatformConfig {
+    apikey: string;
+    app_id?: string;
+    app_code?: string;
+    useHTTPS?: boolean;
+  }
+
+  interface MapOptions {
+    zoom?: number;
+    center?: {
+      lat: number;
+      lng: number;
+    };
+  }
+
+  interface SearchResult {
+    Response: {
+      View: Array<{
+        Result: Array<{
+          Location: {
+            Address: {
+              Label: string;
+            };
+            DisplayPosition: {
+              Latitude: number;
+              Longitude: number;
+            };
+          };
+        }>;
+      }>;
+    };
+  }
+
+  interface GeocodingResult {
+    items: Array<{
+      title: string;
+      id: string;
+      resultType: string;
+      address: {
+        label: string;
+      };
+      position: {
+        lat: number;
+        lng: number;
+      };
+    }>;
+  }
+}
+
+declare const H: H.Service; 

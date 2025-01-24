@@ -31,8 +31,6 @@ export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
   const [roles, setRoles] = useState<string[]>([])
   const [isAddUserOpen, setIsAddUserOpen] = useState(false)
-  const [isAssignRoleOpen, setIsAssignRoleOpen] = useState(false)
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [newUser, setNewUser] = useState({ email: "", password: "" })
 
   useEffect(() => {
@@ -94,7 +92,6 @@ export default function UsersPage() {
       await userService.assignRole(email, role)
       toast.success("Rôle assigné avec succès")
       await loadUsers()
-      setIsAssignRoleOpen(false)
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Erreur lors de l'assignation du rôle")
       console.error(error)

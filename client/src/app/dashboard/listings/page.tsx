@@ -1,7 +1,7 @@
 'use client'
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog"
-import { listingService, type ListingDto, type CreateListingDto, type UpdateListingDto } from "@/lib/services/api"
+import { listingService, type ListingDto } from "@/lib/services/api"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Plus, Pencil, Trash2, Image, ToggleLeft, ToggleRight, Upload, X } from "lucide-react"
 import { listingSchema, updateListingSchema, type ListingFormData } from "@/lib/validations/listing"
@@ -11,7 +11,6 @@ import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { useDropzone } from "react-dropzone"
@@ -20,6 +19,7 @@ import { toast } from "sonner"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, type ControllerRenderProps } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import type { Address } from "@/components/maps/AddressSelector"
 
 const ImageUploadZone = ({ onUpload }: { onUpload: (files: File[]) => void }) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -51,7 +51,7 @@ const ImageUploadZone = ({ onUpload }: { onUpload: (files: File[]) => void }) =>
         <div className="space-y-2">
           <p>Glissez et déposez des images ici, ou cliquez pour sélectionner</p>
           <p className="text-sm text-gray-500">
-            PNG, JPG ou WEBP jusqu'à 10MB
+            PNG, JPG ou WEBP jusqu&apos;à 10MB
           </p>
         </div>
       )}
@@ -225,17 +225,6 @@ export default function ListingsPage() {
     }
   }
 
-  const handleSetHeaderImage = async (listingId: string, imageId: string) => {
-    try {
-      const updatedListing = await listingService.setHeaderImage(listingId, imageId);
-      setListings(listings.map(l => l.id === updatedListing.id ? updatedListing : l));
-      toast.success("Image définie comme en-tête avec succès");
-    } catch (error) {
-      console.error("Erreur lors de la définition de l'image d'en-tête:", error);
-      toast.error("Erreur lors de la définition de l'image d'en-tête");
-    }
-  };
-
   return (
     <div className="space-y-6 p-6">
       <div className="flex justify-between items-center">
@@ -272,12 +261,18 @@ export default function ListingsPage() {
                     name="type"
                     render={({ field }: { field: ControllerRenderProps<ListingFormData, 'type'> }) => (
                       <FormItem>
-                        <FormLabel>Type (séparés par des virgules)</FormLabel>
+                        <FormLabel>Type de propriété</FormLabel>
                         <FormControl>
-                          <Input
-                            value={field.value.join(", ")}
-                            onChange={(e) => field.onChange(e.target.value.split(",").map(t => t.trim()))}
-                          />
+                          <select
+                            className="w-full p-2 border rounded-md"
+                            value={field.value[0] || ''}
+                            onChange={(e) => field.onChange([e.target.value])}
+                          >
+                            <option value="">Sélectionner un type</option>
+                            <option value="VILLA">Villa</option>
+                            <option value="MAISON">Maison</option>
+                            <option value="APPARTEMENT">Appartement</option>
+                          </select>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -364,12 +359,12 @@ export default function ListingsPage() {
                 />
                 <div className="space-y-2">
                   <AddressSelector
-                    onAddressSelect={(address) => {
-                      addForm.setValue('address', address.Address)
-                      addForm.setValue('latitude', address.Latitude)
-                      addForm.setValue('longitude', address.Longitude)
+                    onSelect={(address: Address) => {
+                      addForm.setValue('address', address.address.label)
+                      addForm.setValue('latitude', address.position.lat)
+                      addForm.setValue('longitude', address.position.lng)
                     }}
-                    defaultAddress={addForm.getValues('address')}
+                    defaultValue={addForm.getValues('address')}
                   />
                 </div>
                 <div className="flex justify-end">
@@ -511,12 +506,18 @@ export default function ListingsPage() {
                   name="type"
                   render={({ field }: { field: ControllerRenderProps<ListingFormData, 'type'> }) => (
                     <FormItem>
-                      <FormLabel>Type (séparés par des virgules)</FormLabel>
+                      <FormLabel>Type de propriété</FormLabel>
                       <FormControl>
-                        <Input
-                          value={field.value.join(", ")}
-                          onChange={(e) => field.onChange(e.target.value.split(",").map(t => t.trim()))}
-                        />
+                        <select
+                          className="w-full p-2 border rounded-md"
+                          value={field.value[0] || ''}
+                          onChange={(e) => field.onChange([e.target.value])}
+                        >
+                          <option value="">Sélectionner un type</option>
+                          <option value="VILLA">Villa</option>
+                          <option value="MAISON">Maison</option>
+                          <option value="APPARTEMENT">Appartement</option>
+                        </select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -603,12 +604,12 @@ export default function ListingsPage() {
               />
               <div className="space-y-2">
                 <AddressSelector
-                  onAddressSelect={(address) => {
-                    editForm.setValue('address', address.Address)
-                    editForm.setValue('latitude', address.Latitude)
-                    editForm.setValue('longitude', address.Longitude)
+                  onSelect={(address: Address) => {
+                    editForm.setValue('address', address.address.label)
+                    editForm.setValue('latitude', address.position.lat)
+                    editForm.setValue('longitude', address.position.lng)
                   }}
-                  defaultAddress={editForm.getValues('address')}
+                  defaultValue={editForm.getValues('address')}
                 />
               </div>
               <div className="flex justify-end">

@@ -1,10 +1,9 @@
 'use client'
 
-import { LayoutGrid } from "../landing/layoutgrid"
-import { motion } from 'framer-motion'
 import React from 'react'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
-import { useTranslation } from '@/lib/i18n/useTranslation'
+import { motion } from 'framer-motion'
+import { DirectionAwareHover } from '@/components/directioncard'
+import { LayoutGrid } from "../landing/layoutgrid"
 
 const fadeInUpVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -12,9 +11,6 @@ const fadeInUpVariants = {
 }
 
 const LifestyleComp = () => {
-    const { language } = useLanguage()
-    const { t } = useTranslation(language)
-
     const cards = [
         {
             id: 1,
@@ -26,12 +22,14 @@ const LifestyleComp = () => {
                     transition={{ duration: 0.6 }}
                     viewport={{ once: true }}
                 >
-                    <h3 className="text-2xl md:text-3xl font-bold mb-2">
-                        {t('components.lifestyle.panoramic.title')}
-                    </h3>
-                    <p className="text-sm md:text-base opacity-90">
-                        {t('components.lifestyle.panoramic.description')}
-                    </p>
+                    <div className="space-y-2">
+                        <h3 className="font-semibold text-2xl text-white">
+                            Vue Panoramique
+                        </h3>
+                        <p className="text-gray-200 text-sm max-w-[10rem]">
+                            Profitez d'une vue imprenable sur le Golfe de Saint-Tropez depuis votre terrasse. Un cadre exceptionnel pour des moments inoubliables.
+                        </p>
+                    </div>
                 </motion.div>
             ),
             className: "md:col-span-2",
@@ -52,12 +50,14 @@ const LifestyleComp = () => {
                     transition={{ duration: 0.6, delay: 0.1 }}
                     viewport={{ once: true }}
                 >
-                    <h3 className="text-2xl md:text-3xl font-bold mb-2">
-                        {t('components.lifestyle.design.title')}
-                    </h3>
-                    <p className="text-sm md:text-base opacity-90">
-                        {t('components.lifestyle.design.description')}
-                    </p>
+                    <div className="space-y-2">
+                        <h3 className="font-semibold text-2xl text-white">
+                            Design & Confort
+                        </h3>
+                        <p className="text-gray-200 text-sm max-w-[10rem]">
+                            Un mobilier soigneusement sélectionné alliant élégance et confort pour une expérience de séjour unique.
+                        </p>
+                    </div>
                 </motion.div>
             ),
             className: "col-span-1",
@@ -78,12 +78,14 @@ const LifestyleComp = () => {
                     transition={{ duration: 0.6, delay: 0.2 }}
                     viewport={{ once: true }}
                 >
-                    <h3 className="text-2xl md:text-3xl font-bold mb-2">
-                        {t('components.lifestyle.living.title')}
-                    </h3>
-                    <p className="text-sm md:text-base opacity-90">
-                        {t('components.lifestyle.living.description')}
-                    </p>
+                    <div className="space-y-2">
+                        <h3 className="font-semibold text-2xl text-white">
+                            Espace de Vie
+                        </h3>
+                        <p className="text-gray-200 text-sm max-w-[10rem]">
+                            Des espaces de vie lumineux et spacieux, pensés pour votre confort et agencés avec goût.
+                        </p>
+                    </div>
                 </motion.div>
             ),
             className: "col-span-1",
@@ -104,12 +106,14 @@ const LifestyleComp = () => {
                     transition={{ duration: 0.6, delay: 0.3 }}
                     viewport={{ once: true }}
                 >
-                    <h3 className="text-2xl md:text-3xl font-bold mb-2">
-                        {t('components.lifestyle.kitchen.title')}
-                    </h3>
-                    <p className="text-sm md:text-base opacity-90">
-                        {t('components.lifestyle.kitchen.description')}
-                    </p>
+                    <div className="space-y-2">
+                        <h3 className="font-semibold text-2xl text-white">
+                            Cuisine Équipée
+                        </h3>
+                        <p className="text-gray-200 text-sm max-w-[10rem]">
+                            Des cuisines modernes entièrement équipées pour satisfaire les plus exigeants des chefs amateurs.
+                        </p>
+                    </div>
                 </motion.div>
             ),
             className: "md:col-span-2",
@@ -133,7 +137,7 @@ const LifestyleComp = () => {
                     viewport={{ once: true }}
                     className="text-2xl sm:text-3xl md:text-4xl font-light text-center mb-8 sm:mb-12 text-black"
                 >
-                    {t('components.lifestyle.title')}
+                    Lifestyle
                 </motion.h2>
                 <motion.div 
                     variants={fadeInUpVariants}

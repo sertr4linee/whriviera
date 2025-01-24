@@ -1,11 +1,9 @@
 'use client'
 
 import { images, languages } from "@/lib/constant";
-import { Menu, X, LogIn, Instagram, Facebook, ChevronDown, LayoutDashboard } from 'lucide-react';
+import { Menu, X, LogIn, Instagram, Facebook, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { authService } from "@/lib/services/api"
-import { useRouter } from "next/navigation"
 import EngagementComp from "@/components/landing/engagement";
 import CustomersComp from "@/components/landing/customers"
 import ContactFormComp from "@/components/landing/contact";
@@ -14,12 +12,8 @@ import ServicesComp from "@/components/landing/services";
 import { useState, useEffect } from 'react';
 import OffersComp from "@/components/landing/offers";
 import Link from 'next/link';
-import { useLanguage } from '@/lib/i18n/LanguageContext'
-import { useTranslation } from '@/lib/i18n/useTranslation'
-import { Footer } from "@/components/landing/footer";
 
 export default function LandingPage() {
-  const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -27,16 +21,10 @@ export default function LandingPage() {
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8])
   const [windowWidth, setWindowWidth] = useState(0)
-  const { language, setLanguage } = useLanguage()
-  const { t } = useTranslation(language)
   const [currentLanguage, setCurrentLanguage] = useState('fr')
 
   const handleClick = () => {
-    if (authService.isAuthenticated()) {
-      router.push('/dashboard')
-    } else {
-      router.push('/login')
-    }
+    window.location.href = "/login"
   }
 
   useEffect(() => {
@@ -69,10 +57,10 @@ export default function LandingPage() {
     }
   }, [])
 
-  const handleLanguageChange = (langCode: string) => {
-    setCurrentLanguage(langCode)
-    setLanguage(langCode as 'fr' | 'en')
-  }
+  // const handleLanguageChange = (langCode: string) => {
+  //   setCurrentLanguage(langCode)
+  //   setLanguage(langCode as 'fr' | 'en')
+  // }
 
   return (
     <div className="min-h-screen bg-white">
@@ -112,7 +100,7 @@ export default function LandingPage() {
                     href={item.href}
                     className={`${scrolled ? 'text-gray-800' : 'text-white'} hover:text-gold transition-colors`}
                   >
-                    {t(`landing.menu.${item.key}`)}
+                    {item.key}
                   </Link>
                 </motion.div>
               ))}
@@ -149,7 +137,7 @@ export default function LandingPage() {
                     <button
                       key={lang.code}
                       className="flex items-center w-full px-2 py-1 hover:bg-gray-100"
-                      onClick={() => handleLanguageChange(lang.code)}
+                      // onClick={() => handleLanguageChange(lang.code)};
                     >
                       <span className="mr-2">{lang.flag}</span>
                       {lang.name}
@@ -165,17 +153,8 @@ export default function LandingPage() {
                   whileTap={{ scale: 0.9 }}
                   onClick={handleClick}
                 >
-                  {authService.isAuthenticated() ? (
-                    <>
-                      <LayoutDashboard className="mr-2" size={20} />
-                      Dashboard
-                    </>
-                  ) : (
-                    <>
-                      <LogIn className="mr-2" size={20} />
-                      {t('landing.menu.login')}
-                    </>
-                  )}
+                  <LogIn className="mr-2" size={20} />
+                  Se connecter
                 </motion.button>
             
             </div>
@@ -220,33 +199,24 @@ export default function LandingPage() {
                     href={item.href}
                     className={`${scrolled ? 'text-gray-800' : 'text-white'} hover:text-gold transition-colors`}
                   >
-                    {t(`landing.menu.${item.key}`)}
+                    {item.key}
                   </Link>
                 </motion.div>
               ))}
               </div>
               <div className="w-full max-w-xs flex justify-center mb-6">
-                <motion.button
-                  className="flex items-center justify-center w-full px-4 py-2 text-black bg-gold rounded-full transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    handleClick()
-                    toggleMenu()
-                  }}
-                >
-                  {authService.isAuthenticated() ? (
-                    <>
-                      <LayoutDashboard className="mr-2" size={20} />
-                      Dashboard
-                    </>
-                  ) : (
-                    <>
-                      <LogIn className="mr-2" size={20} />
-                      {t('landing.menu.login')}
-                    </>
-                  )}
-                </motion.button>
+                  <motion.button
+                    className="flex items-center justify-center w-full px-4 py-2 text-black bg-gold rounded-full transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      handleClick()
+                      toggleMenu()
+                    }}
+                  >
+                    <LogIn className="mr-2" size={20} />
+                    Se connecter
+                  </motion.button>
               </div>
               <div className="flex flex-col items-center space-y-3">
                 <div className="flex space-x-4">
@@ -289,7 +259,7 @@ export default function LandingPage() {
                         key={lang.code}
                         className="flex items-center w-full px-4 py-2 text-left hover:bg-gray-100"
                         onClick={() => {
-                          handleLanguageChange(lang.code)
+                          // handleLanguageChange(lang.code)
                           const dropdown = document.getElementById('language-dropdown-mobile')
                           if (dropdown) {
                             dropdown.classList.add('hidden')
@@ -335,20 +305,17 @@ export default function LandingPage() {
             transition={{ duration: 1, delay: 0.5 }}
           >
             <h1 className="text-5xl md:text-7xl mb-4 flex items-center justify-center gap-2">
-              {t('landing.hero.title')}
+              Welkom Home.
             </h1>
             <p className="text-xl md:text-2xl font-light">
-              {t('landing.hero.subtitle')}
+              Expérience de luxe dans le Golfe de Saint-Tropez.
             </p>
             <motion.button
               className="mx-auto mt-8 px-6 sm:px-8 py-3 sm:py-4 bg-transparent backdrop-blur-sm border border-white/30 hover:border-gold/50 text-white text-sm sm:text-lg tracking-wide inline-flex items-center gap-2 sm:gap-3 rounded-lg transition-all duration-300"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => {
-                router.push('/our-guests')
-              }}
             >
-              <span className="font-light whitespace-nowrap">{t('landing.hero.cta')}</span>
+               <span className="font-light whitespace-nowrap">Découvrir nos services</span>
               <motion.span
                 className="text-lg sm:text-xl"
                 initial={{ x: 0 }}
@@ -367,7 +334,6 @@ export default function LandingPage() {
       <CustomersComp />
       <LifestyleComp />
       <ContactFormComp />
-      <Footer />
     </div>
   )
 }

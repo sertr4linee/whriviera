@@ -3,8 +3,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Clock, Lock, Star, Home, ArrowRight } from 'lucide-react'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
-import { useTranslation } from '@/lib/i18n/useTranslation'
 import { DirectionAwareHover } from '@/components/directioncard'
 
 const fadeInUpVariants = {
@@ -18,25 +16,22 @@ const fadeInRightVariants = {
 }
 
 const ServicesComp = () => {
-    const { language } = useLanguage()
-    const { t } = useTranslation(language)
-
     const topics = [
         {
             icon: Clock,
-            title: t('components.services.services.support')
+            title: 'Service 24/7'
         },
         {
             icon: Lock,
-            title: t('components.services.services.confidentiality')
+            title: 'Confidentialité garantie'
         },
         {
             icon: Star,
-            title: t('components.services.services.concierge')
+            title: 'Conciergerie de luxe'
         },
         {
             icon: Home,
-            title: t('components.services.services.properties')
+            title: 'Propriétés d\'exception'
         }
     ]
 
@@ -54,13 +49,13 @@ const ServicesComp = () => {
                             className="text-center lg:text-left"
                         >
                             <span className="inline-block px-3 py-1 bg-gold/10 text-gold rounded-full text-sm font-medium mb-6">
-                                {t('components.services.title')}
+                                NOS SERVICES
                             </span>
                             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                                {t('components.services.subtitle')}
+                                Une expérience sur mesure
                             </h1>
                             <p className="text-gray-600 text-lg mb-12">
-                                {t('components.services.description')}
+                                Découvrez notre gamme complète de services haut de gamme, conçue pour répondre à toutes vos attentes et vous offrir une expérience incomparable dans le Golfe de Saint-Tropez.
                             </p>
                         </motion.div>
 
@@ -73,7 +68,7 @@ const ServicesComp = () => {
                                 viewport={{ once: true }}
                                 className="text-2xl font-semibold mb-6 text-center lg:text-left"
                             >
-                                {t('components.services.mainServices')}
+                                Services principaux
                             </motion.h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 max-w-xl mx-auto lg:mx-0">
                                 {topics.map((topic, index) => (
@@ -132,7 +127,7 @@ const ServicesComp = () => {
                                         window.location.href = '/our-guests'
                                     }}
                                 >
-                                    {t('components.services.cta')}
+                                    Découvrir nos services
                                     <ArrowRight className="ml-2 w-4 h-4" />
                                 </motion.button>
                             </motion.div>

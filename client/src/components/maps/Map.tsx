@@ -1,21 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-
-interface MapProps {
-  center: {
-    lat: number
-    lng: number
-  }
-  zoom: number
-  markers?: Array<{
-    position: {
-      lat: number
-      lng: number
-    }
-    title: string
-  }>
-}
+import { useEffect, useRef, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 declare global {
   interface Window {
@@ -23,191 +9,227 @@ declare global {
   }
 }
 
-const SCRIPTS = [
-  { id: 'here-core', src: 'https://js.api.here.com/v3/3.1/mapsjs-core.js' },
-  { id: 'here-service', src: 'https://js.api.here.com/v3/3.1/mapsjs-service.js' },
-  { id: 'here-events', src: 'https://js.api.here.com/v3/3.1/mapsjs-mapevents.js' },
-  { id: 'here-ui', src: 'https://js.api.here.com/v3/3.1/mapsjs-ui.js' }
-]
+const loadHereMapsScript = () => {
+  return new Promise<void>((resolve, reject) => {
+    if (window.H) {
+      resolve()
+      return
+    }
 
-const CSS = {
-  id: 'here-ui-css',
-  href: 'https://js.api.here.com/v3/3.1/mapsjs-ui.css'
+    // Add UI stylesheet
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.type = 'text/css'
+    link.href = 'https://js.api.here.com/v3/3.1/mapsjs-ui.css'
+    document.head.appendChild(link)
+
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.src = 'https://js.api.here.com/v3/3.1/mapsjs-core.js'
+    script.onload = () => {
+      const service = document.createElement('script')
+      service.type = 'text/javascript'
+      service.src = 'https://js.api.here.com/v3/3.1/mapsjs-service.js'
+      service.onload = () => {
+        const events = document.createElement('script')
+        events.type = 'text/javascript'
+        events.src = 'https://js.api.here.com/v3/3.1/mapsjs-mapevents.js'
+        events.onload = () => {
+          const ui = document.createElement('script')
+          ui.type = 'text/javascript'
+          ui.src = 'https://js.api.here.com/v3/3.1/mapsjs-ui.js'
+          ui.onload = () => resolve()
+          ui.onerror = reject
+          document.head.appendChild(ui)
+        }
+        events.onerror = reject
+        document.head.appendChild(events)
+      }
+      service.onerror = reject
+      document.head.appendChild(service)
+    }
+    script.onerror = reject
+    document.head.appendChild(script)
+  })
 }
 
-export function Map({ center, zoom, markers }: MapProps) {
+interface MapMarker {
+  id: string
+  latitude: number
+  longitude: number
+  title?: string
+  description?: string
+}
+
+interface MapProps {
+  markers: MapMarker[]
+  center?: { latitude: number; longitude: number }
+  zoom?: number
+  onMarkerClick?: (marker: MapMarker) => void
+  className?: string
+}
+
+interface MapInstance {
+  map: H.Map
+  objects: H.map.Marker[]
+  behavior: H.mapevents.Behavior
+  ui: H.ui.UI
+}
+
+export function Map({ 
+  markers, 
+  center,
+  zoom = 13,
+  onMarkerClick,
+  className = ''
+}: MapProps) {
   const mapRef = useRef<HTMLDivElement>(null)
+  const [mapInstance, setMapInstance] = useState<MapInstance | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  
-  const mapObjects = useRef<{
-    map?: any
-    platform?: any
-    behavior?: any
-    ui?: any
-    markers: any[]
-  }>({
-    markers: []
-  })
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false)
 
-  // Fonction pour charger les scripts de manière séquentielle
-  const loadScripts = async () => {
-    try {
-      // Vérifier si les scripts sont déjà chargés
-      if (window.H) return true
-
-      // Ajouter le CSS
-      if (!document.getElementById(CSS.id)) {
-        const link = document.createElement('link')
-        link.id = CSS.id
-        link.rel = 'stylesheet'
-        link.type = 'text/css'
-        link.href = CSS.href
-        document.head.appendChild(link)
-      }
-
-      // Charger les scripts de manière séquentielle
-      for (const script of SCRIPTS) {
-        if (!document.getElementById(script.id)) {
-          await new Promise((resolve, reject) => {
-            const scriptElement = document.createElement('script')
-            scriptElement.id = script.id
-            scriptElement.src = script.src
-            scriptElement.async = true
-            scriptElement.onload = resolve
-            scriptElement.onerror = reject
-            document.head.appendChild(scriptElement)
-          })
-        }
-      }
-
-      return true
-    } catch (error) {
-      console.error('Erreur lors du chargement des scripts HERE Maps:', error)
-      setError('Erreur lors du chargement de la carte')
-      return false
-    }
-  }
-
-  // Initialiser la carte
-  const initializeMap = () => {
-    if (!mapRef.current || mapObjects.current.map) return
-
-    try {
-      // Créer la plateforme HERE
-      mapObjects.current.platform = new window.H.service.Platform({
-        apikey: process.env.NEXT_PUBLIC_HERE_API_KEY
-      })
-
-      const layers = mapObjects.current.platform.createDefaultLayers()
-
-      // Créer la carte
-      mapObjects.current.map = new window.H.Map(
-        mapRef.current,
-        layers.raster.normal.map,
-        {
-          center,
-          zoom,
-          pixelRatio: window.devicePixelRatio || 1
-        }
-      )
-
-      // Ajouter les contrôles d'interaction
-      mapObjects.current.behavior = new window.H.mapevents.Behavior(
-        new window.H.mapevents.MapEvents(mapObjects.current.map)
-      )
-
-      // Ajouter les contrôles UI
-      mapObjects.current.ui = new window.H.ui.UI(mapObjects.current.map, layers)
-
-      // Gérer le redimensionnement
-      const handleResize = () => mapObjects.current.map.getViewPort().resize()
-      window.addEventListener('resize', handleResize)
-
-      // Cleanup function
-      return () => {
-        window.removeEventListener('resize', handleResize)
-        if (mapObjects.current.map) {
-          mapObjects.current.map.dispose()
-        }
-      }
-    } catch (error) {
-      console.error('Erreur lors de l\'initialisation de la carte:', error)
-      setError('Erreur lors de l\'initialisation de la carte')
-    }
-  }
-
-  // Gérer les marqueurs
-  const updateMarkers = () => {
-    if (!mapObjects.current.map) return
-
-    // Supprimer les marqueurs existants
-    mapObjects.current.markers.forEach(marker => {
-      mapObjects.current.map.removeObject(marker)
-    })
-    mapObjects.current.markers = []
-
-    // Ajouter les nouveaux marqueurs
-    if (markers?.length) {
-      markers.forEach(({ position, title }) => {
-        const marker = new window.H.map.Marker(position)
-        mapObjects.current.map.addObject(marker)
-        mapObjects.current.markers.push(marker)
-      })
-    }
-  }
-
-  // Mettre à jour le centre et le zoom
-  const updateViewport = () => {
-    if (!mapObjects.current.map) return
-
-    mapObjects.current.map.setCenter(center)
-    mapObjects.current.map.setZoom(zoom)
-  }
-
-  // Effet pour charger les scripts et initialiser la carte
+  // Load scripts only once
   useEffect(() => {
-    const init = async () => {
-      setIsLoading(true)
-      const scriptsLoaded = await loadScripts()
-      if (scriptsLoaded) {
-        initializeMap()
+    if (!isScriptLoaded) {
+      loadHereMapsScript()
+        .then(() => {
+          setIsScriptLoaded(true)
+        })
+        .catch((err) => {
+          console.error('Error loading HERE Maps:', err)
+          setError('Unable to load map')
+          setIsLoading(false)
+        })
+    }
+  }, [isScriptLoaded])
+
+  // Initialize map after scripts are loaded
+  useEffect(() => {
+    if (isScriptLoaded && !mapInstance) {
+      initializeMap()
+    }
+
+    return () => {
+      if (mapInstance) {
+        mapInstance.map.dispose()
       }
+    }
+  }, [isScriptLoaded])
+
+  const initializeMap = () => {
+    if (!mapRef.current) return
+
+    try {
+      const platform = new window.H.service.Platform({
+        apikey: process.env.NEXT_PUBLIC_HERE_API_KEY || ''
+      })
+
+      const defaultLayers = platform.createDefaultLayers()
+      
+      const map = new window.H.Map(
+        mapRef.current,
+        defaultLayers.vector.normal.map,
+        {
+          zoom,
+          center: { 
+            lat: center?.latitude || markers[0]?.latitude || 48.8566,
+            lng: center?.longitude || markers[0]?.longitude || 2.3522
+          }
+        }
+      )
+
+      const behavior = new window.H.mapevents.Behavior(new window.H.mapevents.MapEvents(map))
+      const ui = window.H.ui.UI.createDefault(map, defaultLayers)
+
+      setMapInstance({
+        map,
+        objects: [],
+        behavior,
+        ui
+      })
+      setIsLoading(false)
+    } catch (err) {
+      console.error('Error initializing map:', err)
+      setError('Unable to load map')
       setIsLoading(false)
     }
+  }
 
-    init()
-  }, [])
-
-  // Effet pour mettre à jour les marqueurs
+  // Update markers when they change
   useEffect(() => {
-    if (!isLoading && !error) {
+    if (mapInstance) {
       updateMarkers()
     }
-  }, [markers, isLoading, error])
+  }, [mapInstance, markers])
 
-  // Effet pour mettre à jour le viewport
+  // Update viewport when center or zoom changes
   useEffect(() => {
-    if (!isLoading && !error) {
+    if (mapInstance) {
       updateViewport()
     }
-  }, [center, zoom, isLoading, error])
+  }, [mapInstance, center, zoom])
+
+  const updateMarkers = () => {
+    if (!mapInstance) return
+
+    // Remove existing markers
+    mapInstance.objects.forEach(marker => {
+      mapInstance.map.removeObject(marker)
+    })
+
+    // Add new markers
+    const newMarkers = markers.map(markerData => {
+      const marker = new window.H.map.Marker({
+        lat: markerData.latitude,
+        lng: markerData.longitude
+      })
+
+      if (onMarkerClick) {
+        marker.addEventListener('tap', () => onMarkerClick(markerData))
+      }
+
+      mapInstance.map.addObject(marker)
+      return marker
+    })
+
+    setMapInstance(prev => prev ? {
+      ...prev,
+      objects: newMarkers
+    } : null)
+  }
+
+  const updateViewport = () => {
+    if (!mapInstance) return
+
+    mapInstance.map.setCenter({
+      lat: center?.latitude || markers[0]?.latitude || 48.8566,
+      lng: center?.longitude || markers[0]?.longitude || 2.3522
+    })
+    mapInstance.map.setZoom(zoom)
+  }
 
   if (error) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-100 text-red-500">
-        {error}
+      <div className={`flex items-center justify-center bg-gray-100 rounded-lg ${className}`}>
+        <p className="text-red-500">{error}</p>
       </div>
     )
   }
 
   if (isLoading) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-100">
-        Chargement de la carte...
+      <div className={`flex items-center justify-center bg-gray-100 rounded-lg ${className}`}>
+        <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
       </div>
     )
   }
 
-  return <div ref={mapRef} className="w-full h-full" />
+  return (
+    <div 
+      ref={mapRef}
+      className={`w-full h-full min-h-[400px] rounded-lg overflow-hidden ${className}`}
+    />
+    
+  )
 } 

@@ -5,6 +5,7 @@ import { listingService, type ListingDto } from '@/lib/services/api'
 import { useParams } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import { Map } from '@/components/maps/Map'
+import Image from 'next/image'
 
 export default function ListingDetailPage() {
   const params = useParams()
@@ -76,10 +77,12 @@ export default function ListingDetailPage() {
     <div className="min-h-screen bg-white">
       <div className="relative h-[60vh]">
         {headerImage && (
-          <img
+          <Image
             src={headerImage}
             alt={listing.name}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            priority
           />
         )}
         <div className="absolute inset-0 bg-black/30" />
@@ -115,14 +118,14 @@ export default function ListingDetailPage() {
               <p className="text-gray-600 mb-4">{listing.address}</p>
               <div className="h-[300px] rounded-lg overflow-hidden">
                 <Map
-                  center={{ lat: listing.latitude, lng: listing.longitude }}
-                  markers={[
-                    {
-                      position: { lat: listing.latitude, lng: listing.longitude },
-                      title: listing.name
-                    }
-                  ]}
+                  markers={[{
+                    id: listing.id,
+                    latitude: listing.latitude,
+                    longitude: listing.longitude,
+                    title: listing.name
+                  }]}
                   zoom={15}
+                  className="w-full h-full"
                 />
               </div>
             </div>
@@ -132,12 +135,14 @@ export default function ListingDetailPage() {
             <h3 className="text-2xl font-semibold mb-4">Galerie</h3>
             <div className="grid grid-cols-2 gap-4">
               {listing.images.map((image, index) => (
-                <img
-                  key={image.id}
-                  src={image.url}
-                  alt={`${listing.name} - Image ${index + 1}`}
-                  className="w-full h-48 object-cover rounded-lg"
-                />
+                <div key={image.id} className="relative h-48">
+                  <Image
+                    src={image.url}
+                    alt={`${listing.name} - Image ${index + 1}`}
+                    fill
+                    className="object-cover rounded-lg"
+                  />
+                </div>
               ))}
             </div>
           </div>
