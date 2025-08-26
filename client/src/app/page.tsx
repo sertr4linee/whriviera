@@ -61,11 +61,11 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-neutral-50">
       <motion.nav
-        className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/80 backdrop-blur-md border-b border-neutral-100' : 'bg-transparent'
+        className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'backdrop-blur-xl bg-black/20 shadow-2xl border-b border-white/10' : 'bg-transparent'
           }`}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
@@ -74,7 +74,7 @@ export default function LandingPage() {
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
             >
-              <Link href="/" className={`${scrolled ? 'text-neutral-900' : 'text-white'} transition-colors duration-300`}>
+              <Link href="/" className={`${scrolled ? 'text-white' : 'text-white'} transition-colors duration-300`}>
                 Welkom Home
               </Link>
             </motion.div>
@@ -92,21 +92,21 @@ export default function LandingPage() {
                 >
                   <Link
                     href={item.href}
-                    className={`${scrolled ? 'text-neutral-700 hover:text-neutral-900' : 'text-white/90 hover:text-white'} 
-                    text-sm font-light tracking-wide transition-all duration-300`}
+                    className={`${scrolled ? 'text-white hover:text-white' : 'text-white/90 hover:text-white'} 
+                    text-sm font-light tracking-wide transition-all duration-300 hover:bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm`}
                   >
                     {item.key}
                   </Link>
                 </motion.div>
               ))}
               
-              <div className="flex items-center space-x-4 ml-8 pl-8 border-l border-neutral-300/20">
+              <div className="flex items-center space-x-4 ml-8 pl-8 border-l border-white/20">
                 <motion.a
                   href="https://www.instagram.com/welkomhome"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${scrolled ? 'text-neutral-600 hover:text-neutral-900' : 'text-white/80 hover:text-white'
-                    } transition-all duration-300`}
+                  className={`${scrolled ? 'text-white hover:text-white' : 'text-white/80 hover:text-white'
+                    } transition-all duration-300 p-2 rounded-full hover:bg-white/10 backdrop-blur-sm`}
                   whileHover={{ scale: 1.1, y: -1 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -116,8 +116,8 @@ export default function LandingPage() {
                   href="https://www.facebook.com/welkomhome"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${scrolled ? 'text-neutral-600 hover:text-neutral-900' : 'text-white/80 hover:text-white'
-                    } transition-all duration-300`}
+                  className={`${scrolled ? 'text-white hover:text-white' : 'text-white/80 hover:text-white'
+                    } transition-all duration-300 p-2 rounded-full hover:bg-white/10 backdrop-blur-sm`}
                   whileHover={{ scale: 1.1, y: -1 }}
                   transition={{ duration: 0.2 }}
                 >
