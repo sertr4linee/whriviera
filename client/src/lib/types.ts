@@ -1,3 +1,4 @@
+// Types pour le système i18n
 export interface TranslationSchema {
   landing: {
     hero: {
@@ -9,7 +10,6 @@ export interface TranslationSchema {
       guests: string;
       join: string;
       about: string;
-      login: string;
     };
   };
   components: {

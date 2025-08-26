@@ -10,8 +10,7 @@ export const fr: TranslationSchema = {
     menu: {
       guests: "Nos Hôtes",
       join: "Nous Rejoindre",
-      about: "A propos",
-      login: "Se connecter"
+      about: "A propos"
     }
   },
   components: {
